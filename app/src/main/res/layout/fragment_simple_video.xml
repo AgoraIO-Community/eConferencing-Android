@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.ViewGroup.LayoutParams" />
+
+        <import type="io.agora.meeting.data.ShareScreen.Screen" />
+
+        <variable
+            name="viewModel"
+            type="io.agora.meeting.viewmodel.MeetingViewModel" />
+
+        <variable
+            name="member"
+            type="io.agora.meeting.data.Member" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.SimpleVideoFragment">
+
+        <FrameLayout
+            android:id="@+id/fl_large_video"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:video_enable="@{member == null || viewModel.isGrantScreen(member) || member.videoEnable}"
+            app:video_overlay="@{false}"
+            app:video_uid="@{member == null ? 0 : (member instanceof Screen ? member.screenId : member.uid)}" />
+
+        <FrameLayout
+            android:id="@+id/fl_little_video"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:video_enable="@{member != null &amp;&amp; viewModel.me.videoEnable}"
+            app:video_overlay="@{true}"
+            app:video_uid="@{member == null ? -1 : 0}" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginTop="@dimen/dp_11"
+            android:background="@drawable/bg_right_radius"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/dp_10"
+            app:isGone="@{member == null}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_host"
+                android:layout_width="@dimen/dp_16"
+                android:layout_height="@dimen/dp_16"
+                android:layout_marginHorizontal="@dimen/dp_5"
+                android:src="@drawable/ic_round_host"
+                app:isGone="@{!member.host}" />
+
+            <ImageView
+                android:id="@+id/iv_share"
+                android:layout_width="@dimen/dp_16"
+                android:layout_height="@dimen/dp_16"
+                android:layout_marginHorizontal="@dimen/dp_5"
+                android:src="@drawable/ic_round_screen_share"
+                app:isGone="@{!viewModel.isGrantScreen(member)}" />
+
+            <ImageView
+                android:id="@+id/iv_mic"
+                android:layout_width="@dimen/dp_16"
+                android:layout_height="@dimen/dp_16"
+                android:layout_marginHorizontal="@dimen/dp_5"
+                android:src="@drawable/sel_round_mic"
+                app:activated="@{member.audioEnable}" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{member.userName}"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp_11" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

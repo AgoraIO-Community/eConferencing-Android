@@ -1,0 +1,65 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="member"
+            type="io.agora.meeting.data.Member" />
+
+    </data>
+
+    <merge
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+        <FrameLayout
+            android:id="@+id/fl_video"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/gray_525353"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:video_enable="@{member.videoEnable}"
+            app:video_overlay="@{false}"
+            app:video_uid="@{member.uid}" />
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/dp_72"
+            android:layout_height="@dimen/dp_72"
+            android:src="@drawable/ic_logo_little"
+            app:isGone="@{member.videoEnable}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_mic"
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_16"
+            android:layout_marginStart="@dimen/dp_10"
+            android:src="@drawable/sel_round_mic"
+            app:activated="@{member.audioEnable}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{member.userName}"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_mic"
+            app:layout_constraintStart_toEndOf="@+id/iv_mic"
+            app:layout_constraintTop_toTopOf="@+id/iv_mic" />
+
+    </merge>
+
+</layout>
