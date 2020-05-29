@@ -68,6 +68,6 @@ public class GridVideoFragment extends BaseFragment<FragmentGridVideoBinding> {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        meetingVM.renders.observe(getViewLifecycleOwner(), renders -> adapter.submitList(renders.subList(fromIndex, Math.min(toIndex, renders.size()))));
+        meetingVM.renders.observe(getViewLifecycleOwner(), renders -> adapter.submitList(renders.subList(Math.min(fromIndex, renders.size()), Math.min(toIndex, renders.size()))));
     }
 }

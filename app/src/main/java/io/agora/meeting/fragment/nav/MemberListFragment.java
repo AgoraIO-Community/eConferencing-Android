@@ -23,6 +23,7 @@ import io.agora.meeting.base.OnItemClickListener;
 import io.agora.meeting.data.Member;
 import io.agora.meeting.databinding.FragmentMemberListBinding;
 import io.agora.meeting.fragment.ActionSheetFragment;
+import io.agora.meeting.fragment.InviteFragment;
 import io.agora.meeting.util.TipsUtil;
 import io.agora.meeting.viewmodel.MeetingViewModel;
 
@@ -51,7 +52,7 @@ public class MemberListFragment extends BaseFragment<FragmentMemberListBinding> 
         binding.setClickListener(v -> {
             switch (v.getId()) {
                 case R.id.btn_invite:
-                    // TODO
+                    new InviteFragment().show(getChildFragmentManager(), null);
                     break;
                 case R.id.btn_chat:
                     Navigation.findNavController(v).navigate(MemberListFragmentDirections.actionMemberListFragmentToChatFragment());

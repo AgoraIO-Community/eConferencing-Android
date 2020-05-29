@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="io.agora.rtc.video.VideoCanvas" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -18,7 +20,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.SimpleVideoFragment">
+        tools:context=".fragment.SimpleBoardFragment">
 
         <io.agora.meeting.widget.WhiteBoardView
             android:id="@+id/white_board_view"
@@ -41,6 +43,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:video_enable="@{viewModel.me.videoEnable}"
             app:video_overlay="@{true}"
+            app:video_render_mode="@{VideoCanvas.RENDER_MODE_HIDDEN}"
             app:video_uid="@{0}" />
 
         <LinearLayout

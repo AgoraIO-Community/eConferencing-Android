@@ -7,12 +7,12 @@ import android.widget.RelativeLayout;
 
 import androidx.databinding.BindingAdapter;
 
-import io.agora.rtc.video.VideoCanvas;
+import io.agora.sdk.annotation.RenderMode;
 import io.agora.sdk.manager.RtcManager;
 
 public class BindingAdapters {
     @BindingAdapter("android:layout_alignParentEnd")
-    public static void bindAlignParentEnd(View view, Boolean alignParentEnd) {
+    public static void bindAlignParentEnd(View view, boolean alignParentEnd) {
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
 
         if (layoutParams instanceof RelativeLayout.LayoutParams) {
@@ -26,38 +26,34 @@ public class BindingAdapters {
     }
 
     @BindingAdapter("isGone")
-    public static void bindIsGone(View view, Boolean isGone) {
+    public static void bindIsGone(View view, boolean isGone) {
         view.setVisibility(isGone ? View.GONE : View.VISIBLE);
     }
 
     @BindingAdapter("activated")
-    public static void bindActivated(View view, Boolean activated) {
+    public static void bindActivated(View view, boolean activated) {
         view.setActivated(activated);
     }
 
     @BindingAdapter({
             "video_enable",
             "video_uid",
-            "video_overlay"
+            "video_overlay",
+            "video_render_mode",
     })
-    public static void bindVideo(View view, Boolean enable, Integer uid, Boolean overlay) {
+    public static void bindVideo(View view, boolean enable, int uid, boolean overlay, @RenderMode int renderMode) {
         if (view instanceof ViewGroup) {
             if (enable) {
                 SurfaceView surfaceView = RtcManager.instance().createRendererView(view.getContext());
                 surfaceView.setZOrderMediaOverlay(overlay);
                 if (uid == 0) {
-                    RtcManager.instance().setupLocalVideo(surfaceView, VideoCanvas.RENDER_MODE_HIDDEN);
+                    RtcManager.instance().setupLocalVideo(surfaceView, renderMode);
                 } else {
-                    RtcManager.instance().setupRemoteVideo(surfaceView, VideoCanvas.RENDER_MODE_HIDDEN, uid);
+                    RtcManager.instance().setupRemoteVideo(surfaceView, renderMode, uid);
                 }
                 ((ViewGroup) view).removeAllViews();
                 ((ViewGroup) view).addView(surfaceView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             } else {
-                if (uid == 0) {
-                    RtcManager.instance().setupLocalVideo(null, VideoCanvas.RENDER_MODE_HIDDEN);
-                } else {
-                    RtcManager.instance().setupRemoteVideo(null, VideoCanvas.RENDER_MODE_HIDDEN, uid);
-                }
                 ((ViewGroup) view).removeAllViews();
             }
         }

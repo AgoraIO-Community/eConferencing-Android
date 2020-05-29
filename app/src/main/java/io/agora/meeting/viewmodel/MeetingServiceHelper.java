@@ -64,9 +64,11 @@ public class MeetingServiceHelper {
     public void getRoomInfo(@NonNull String roomId) {
         service.room(appId, roomId)
                 .enqueue(new BaseCallback<>(data -> {
+                    // must set room and me before everything
                     meetingVM.room.setValue(new Room(data.room));
-                    meetingVM.updateRoomState(new RoomState(data.room));
                     meetingVM.me.setValue(data.user);
+
+                    meetingVM.updateRoomState(new RoomState(data.room));
                     meetingVM.updateHosts(data.room.hosts);
                     meetingVM.updateShareBoard(new ShareBoard() {{
                         shareBoard = data.room.shareBoard;

@@ -4,6 +4,10 @@
 
     <data>
 
+        <import type="io.agora.meeting.data.ShareScreen.Screen" />
+
+        <import type="io.agora.rtc.video.VideoCanvas" />
+
         <variable
             name="member"
             type="io.agora.meeting.data.Member" />
@@ -24,9 +28,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:video_enable="@{member.videoEnable}"
+            app:video_enable="@{member instanceof Screen || member.videoEnable}"
             app:video_overlay="@{false}"
-            app:video_uid="@{member.uid}" />
+            app:video_render_mode="@{member instanceof Screen ? VideoCanvas.RENDER_MODE_FIT : VideoCanvas.RENDER_MODE_HIDDEN}"
+            app:video_uid="@{member instanceof Screen ? member.screenId : member.uid}" />
 
         <ImageView
             android:id="@+id/iv_avatar"
@@ -44,6 +49,7 @@
             android:layout_width="@dimen/dp_16"
             android:layout_height="@dimen/dp_16"
             android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_5"
             android:src="@drawable/sel_round_mic"
             app:activated="@{member.audioEnable}"
             app:layout_constraintBottom_toBottomOf="parent"

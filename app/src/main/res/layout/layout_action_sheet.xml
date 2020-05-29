@@ -33,6 +33,7 @@
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_8"
             android:background="@android:color/white"
             android:onClick="@{clickListener}"
             android:text="@string/cancel"

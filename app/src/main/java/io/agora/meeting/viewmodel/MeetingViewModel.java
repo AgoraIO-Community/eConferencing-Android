@@ -277,7 +277,7 @@ public class MeetingViewModel extends ViewModel {
                 updateAudiences(audiences);
             }
             this.muteAllAudio.postValue(roomState.muteAllAudio);
-            if (muteAllAudio != null) { // skip first time
+            if (!isHost(getMeValue())) { // skip if I'm the host
                 Events.AlertEvent.setEvent(roomState.muteAllAudio);
             }
         }
@@ -439,8 +439,10 @@ public class MeetingViewModel extends ViewModel {
             modifyModuleState(target.userId, Module.BOARD, isGrantBoard(target) ? ModuleState.DISABLE : ModuleState.ENABLE);
         } else {
             if (targetIsMe) {
-                if (isGrantBoard(target)) {
-                    modifyModuleState(target.userId, Module.BOARD, ModuleState.DISABLE);
+                if (isBoardSharing()) {
+                    if (isGrantBoard(target)) {
+                        modifyModuleState(target.userId, Module.BOARD, ModuleState.DISABLE);
+                    }
                 } else {
                     String boardHostId = getBoardHostId();
                     if (TextUtils.isEmpty(boardHostId)) {

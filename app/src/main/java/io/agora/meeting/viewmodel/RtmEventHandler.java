@@ -127,9 +127,19 @@ public class RtmEventHandler extends RtmEventListener {
                     break;
                 case AccessState.ENTER:
                     if (memberState.role == Role.HOST) {
-                        hosts.add(memberState);
+                        int index = hosts.indexOf(memberState);
+                        if (index > -1) {
+                            hosts.set(index, memberState);
+                        } else {
+                            hosts.add(memberState);
+                        }
                     } else if (memberState.role == Role.AUDIENCE) {
-                        audiences.add(memberState);
+                        int index = audiences.indexOf(memberState);
+                        if (index > -1) {
+                            audiences.set(index, memberState);
+                        } else {
+                            audiences.add(memberState);
+                        }
                     }
                     // TODO
                     ToastManager.showShort(memberState.userName + " join");

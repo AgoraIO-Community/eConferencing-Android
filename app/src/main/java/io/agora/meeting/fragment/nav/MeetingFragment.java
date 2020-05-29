@@ -1,7 +1,6 @@
 package io.agora.meeting.fragment.nav;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +33,7 @@ import io.agora.meeting.data.PeerMsg;
 import io.agora.meeting.databinding.FragmentMeetingBinding;
 import io.agora.meeting.databinding.LayoutRatingBinding;
 import io.agora.meeting.fragment.ActionSheetFragment;
+import io.agora.meeting.fragment.InviteFragment;
 import io.agora.meeting.util.Events;
 import io.agora.meeting.util.TimeUtil;
 import io.agora.meeting.util.TipsUtil;
@@ -54,30 +54,7 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
     private OnBackPressedCallback callback = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
-            Context context = requireContext();
-            AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                    .setTitle(R.string.exit_title)
-                    .setPositiveButton(R.string.exit_meeting, (dialog, which) -> {
-                        meetingVM.exitRoom(meetingVM.getMeValue());
-                        LayoutRatingBinding binding = LayoutRatingBinding.inflate(LayoutInflater.from(context));
-                        binding.ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-                            if (rating == 0) {
-                                ratingBar.setRating(1);
-                            }
-                        });
-                        new AlertDialog.Builder(context)
-                                .setTitle(R.string.rate)
-                                .setView(binding.getRoot())
-                                .setPositiveButton(R.string.submit, (dialog1, which1) -> rtcVM.rate(binding.ratingBar.getProgress()))
-                                .setOnDismissListener(dialog1 -> Navigation.findNavController(requireView()).navigateUp())
-                                .show();
-                    })
-                    .setNegativeButton(R.string.cancel, null);
-            if (meetingVM.isHost(meetingVM.getMeValue())) {
-                builder.setMessage(R.string.exit_message)
-                        .setNeutralButton(R.string.close_meeting, (dialog, which) -> meetingVM.closeRoom());
-            }
-            builder.show();
+            showExitDialog();
         }
     };
 
@@ -137,9 +114,7 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
 
     private void subscribeOnActivity() {
         meetingVM.meetingState.observe(requireActivity(), meetingState -> {
-            if (meetingState == MeetingState.END) {
-                showForceExitDialog(R.string.kick_out);
-            }
+            if (meetingState == MeetingState.END) showForceExitDialog(R.string.close_title);
         });
         meetingVM.me.observe(requireActivity(), me -> {
             rtcVM.muteLocalAudioStream(!me.isAudioEnable());
@@ -157,13 +132,7 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
                 normal.process(requireContext(), meetingVM);
             }
         });
-        Events.AlertEvent.addListener(requireActivity(), alertEvent ->
-                new AlertDialog.Builder(requireContext())
-                        .setTitle(alertEvent.title)
-                        .setMessage(alertEvent.message)
-                        .setPositiveButton(alertEvent.positive, null)
-                        .show()
-        );
+        Events.AlertEvent.addListener(requireActivity(), this::showAlertDialog);
         Events.KickEvent.addListener(requireActivity(), kickEvent -> showForceExitDialog(R.string.kick_out));
     }
 
@@ -272,7 +241,7 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
         }});
         actionSheet.setOnItemClickListener((view, position, id) -> {
             if (id == R.id.menu_invite) {
-                // TODO
+                new InviteFragment().show(getChildFragmentManager(), null);
             } else if (id == R.id.menu_mute_all) {
                 meetingVM.switchMuteAllAudio(requireContext());
             } else if (id == R.id.menu_record) {
@@ -280,18 +249,58 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
             } else if (id == R.id.menu_board) {
                 meetingVM.switchBoardState(meetingVM.getMeValue());
             } else if (id == R.id.menu_setting) {
-                // TODO
+                Navigation.findNavController(requireView()).navigate(MeetingFragmentDirections.actionMeetingFragmentToMeetingSettingFragment());
             }
         });
         actionSheet.show(getChildFragmentManager(), null);
+    }
+
+    private void showExitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.exit_title)
+                .setPositiveButton(R.string.exit_meeting, (dialog, which) -> {
+                    meetingVM.exitRoom(meetingVM.getMeValue());
+                    showRateDialog();
+                })
+                .setNegativeButton(R.string.cancel, null);
+        if (meetingVM.isHost(meetingVM.getMeValue())) {
+            builder.setMessage(R.string.exit_message)
+                    .setNeutralButton(R.string.close_meeting, (dialog, which) -> meetingVM.closeRoom());
+        }
+        builder.show();
     }
 
     private void showForceExitDialog(@StringRes int titleRes) {
         meetingVM.exitRoom(meetingVM.getMeValue());
         new AlertDialog.Builder(requireContext())
                 .setTitle(titleRes)
-                .setPositiveButton(R.string.know, (dialog, which) ->
-                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(LoginFragmentDirections.actionGlobalLoginFragment())
-                ).setCancelable(false).show();
+                .setPositiveButton(R.string.know, (dialog, which) -> {
+                    if (titleRes == R.string.close_title) {
+                        showRateDialog();
+                    } else if (titleRes == R.string.kick_out) {
+                        Navigation.findNavController(requireView()).navigate(MeetingFragmentDirections.actionGlobalLoginFragment());
+                    }
+                }).setCancelable(false).show();
+    }
+
+    private void showRateDialog() {
+        LayoutRatingBinding binding = LayoutRatingBinding.inflate(getLayoutInflater());
+        binding.ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            if (rating == 0) ratingBar.setRating(1);
+        });
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.rate)
+                .setView(binding.getRoot())
+                .setPositiveButton(R.string.submit, (dialog1, which1) -> rtcVM.rate(binding.ratingBar.getProgress()))
+                .setOnDismissListener(dialog1 -> Navigation.findNavController(requireView()).navigate(MeetingFragmentDirections.actionGlobalLoginFragment()))
+                .show();
+    }
+
+    private void showAlertDialog(Events.AlertEvent alertEvent) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(alertEvent.title)
+                .setMessage(alertEvent.message)
+                .setPositiveButton(alertEvent.positive, null)
+                .show();
     }
 }

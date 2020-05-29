@@ -11,7 +11,7 @@ public class ShareBoard {
     public List<Board> shareBoardUsers;
 
     public boolean isShareBoard() {
-        return shareBoard == ModuleState.ENABLE;
+        return shareBoard == ModuleState.ENABLE && shareBoardUsers.size() > 0;
     }
 
     public static class Board extends Member {

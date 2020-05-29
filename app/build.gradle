@@ -17,6 +17,7 @@ android {
 
         buildConfigField 'String', 'CODE', '"conf-demo"'
         buildConfigField 'String', 'EXTRA', '"AgoraMeeting"'
+        buildConfigField 'String', 'POLICY_URL', '"https://www.agora.io/privacy-policy"'
     }
 
     buildTypes {

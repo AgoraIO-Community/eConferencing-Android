@@ -1,6 +1,8 @@
 package io.agora.meeting.fragment.nav;
 
+import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -40,8 +42,9 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding> {
                     commonVM.checkVersion(false);
                     break;
                 case R.id.tv_agreement:
-                    break;
                 case R.id.tv_policy:
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.POLICY_URL));
+                    startActivity(intent);
                     break;
             }
         });

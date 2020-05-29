@@ -3,7 +3,7 @@
     <string name="app_name">AgoraMeeting</string>
     <string name="request_error">服务器请求失败：%1$d</string>
     <string name="upload_success">上传成功，请保存日志编号帮助我们排查问题！</string>
-    <string name="clipboard">日志编号已保存到剪切板</string>
+    <string name="clipboard">成功保存到剪贴板</string>
 
     <!-- LoginFragment -->
     <string name="open_camera">打开摄像头</string>
@@ -20,6 +20,7 @@
     <string name="avatar">头像</string>
     <string name="camera">摄像头</string>
     <string name="mic">麦克风</string>
+    <string name="beauty">美颜（敬请期待）</string>
     <string name="upload_log">上传日志</string>
 
     <!-- AboutFragment -->
@@ -89,6 +90,7 @@
     <string name="exit_message">如果您不想中断会议，请在离开前指定新的主持人</string>
     <string name="close_meeting">结束会议</string>
     <string name="exit_meeting">退出会议</string>
+    <string name="close_title">会议已结束</string>
 
     <string name="rate">请您为会议通话质量打分</string>
     <string name="submit">提交</string>
@@ -120,5 +122,12 @@
     <string name="authorize_board">授予白板互动</string>
     <string name="cancel_board">取消白板互动</string>
     <string name="kick_out">移出房间</string>
+
+    <!-- InviteFragment -->
+    <string name="meeting_name">会议名：%1$s</string>
+    <string name="invited_by">邀请人：%1$s</string>
+    <string name="meeting_pwd">会议密码：%1$s</string>
+    <string name="invitation_link">邀请链接：</string>
+    <string name="copy_meeting_info">复制会议信息</string>
 
 </resources>

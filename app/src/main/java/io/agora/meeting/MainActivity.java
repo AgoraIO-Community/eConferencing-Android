@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import io.agora.meeting.broadcast.DownloadReceiver;
 import io.agora.meeting.service.body.res.AppVersionRes;
 import io.agora.meeting.util.Events;
 import io.agora.meeting.viewmodel.CommonViewModel;

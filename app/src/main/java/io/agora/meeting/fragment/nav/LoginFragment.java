@@ -18,7 +18,7 @@ import io.agora.meeting.R;
 import io.agora.meeting.annotaion.member.ModuleState;
 import io.agora.meeting.base.BaseFragment;
 import io.agora.meeting.databinding.FragmentLoginBinding;
-import io.agora.meeting.popup.TipsPopup;
+import io.agora.meeting.widget.TipsPopup;
 import io.agora.meeting.service.body.req.RoomEntryReq;
 import io.agora.meeting.util.UUIDUtil;
 import io.agora.meeting.viewmodel.MeetingViewModel;
@@ -64,7 +64,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                         enableAudio = binding.swMic.isChecked() ? ModuleState.ENABLE : ModuleState.DISABLE;
                     }}, res -> {
                         try {
-                            Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginFragmentToNavMeeting(res));
+                            Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginFragmentToMeetingFragment(res));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

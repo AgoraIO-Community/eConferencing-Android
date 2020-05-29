@@ -39,7 +39,7 @@ public class LogUtil {
                                 .setPositiveButton(R.string.know, (dialog, which) -> {
                                     ClipboardManager manager = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
                                     if (manager != null) {
-                                        manager.setPrimaryClip(ClipData.newPlainText("LogNumber", res));
+                                        manager.setPrimaryClip(ClipData.newPlainText(null, res));
                                         ToastManager.showShort(activity.getString(R.string.clipboard));
                                     }
                                 })

@@ -1,4 +1,4 @@
-package io.agora.meeting.popup;
+package io.agora.meeting.widget;
 
 import android.content.Context;
 import android.graphics.Rect;

@@ -1,4 +1,4 @@
-package io.agora.meeting.broadcast;
+package io.agora.meeting;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;

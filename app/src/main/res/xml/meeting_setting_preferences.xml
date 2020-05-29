@@ -3,18 +3,31 @@
 
     <PreferenceCategory>
         <Preference
+            android:layout="@layout/layout_preference_edittext"
+            app:iconSpaceReserved="false"
+            app:key="@string/key_room_name"
+            app:title="@string/room_name" />
+
+        <Preference
+            android:layout="@layout/layout_preference_edittext"
+            app:iconSpaceReserved="false"
+            app:key="@string/key_room_pwd"
+            app:title="@string/room_pwd" />
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        <Preference
             android:layout="@layout/layout_preference_image"
             app:icon="@drawable/ic_logo_little"
             app:iconSpaceReserved="false"
             app:key="@string/key_avatar"
             app:title="@string/avatar" />
 
-        <EditTextPreference
+        <Preference
             android:layout="@layout/layout_preference_edittext"
             app:iconSpaceReserved="false"
             app:key="@string/key_name"
-            app:title="@string/name"
-            app:useSimpleSummaryProvider="true" />
+            app:title="@string/name" />
     </PreferenceCategory>
 
     <PreferenceCategory>
@@ -44,6 +57,14 @@
             app:icon="@drawable/ic_arrow_right"
             app:iconSpaceReserved="false"
             app:title="@string/about" />
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        <Preference
+            android:key="@string/key_invite"
+            android:layout="@layout/layout_preference_button"
+            app:iconSpaceReserved="false"
+            app:title="@string/invite" />
     </PreferenceCategory>
 
     <PreferenceCategory>

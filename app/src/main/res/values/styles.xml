@@ -2,6 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/blue_4da1ff</item>
         <item name="preferenceTheme">@style/PreferenceTheme</item>
     </style>
 

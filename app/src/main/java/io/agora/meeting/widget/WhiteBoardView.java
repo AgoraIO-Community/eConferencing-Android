@@ -24,6 +24,7 @@ public class WhiteBoardView extends WhiteboardView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
+        requestFocus();
         ViewParent parent = getParent();
         if (parent == null) return false;
         switch (event.getAction()) {
