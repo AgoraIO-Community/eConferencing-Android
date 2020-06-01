@@ -14,10 +14,12 @@ import java.util.List;
 
 import io.agora.base.ToastManager;
 import io.agora.meeting.annotaion.member.AccessState;
+import io.agora.meeting.annotaion.member.ModuleState;
 import io.agora.meeting.annotaion.member.Role;
 import io.agora.meeting.annotaion.message.BroadcastCmd;
 import io.agora.meeting.annotaion.message.PeerCmd;
 import io.agora.meeting.data.BroadcastMsg;
+import io.agora.meeting.data.Me;
 import io.agora.meeting.data.Member;
 import io.agora.meeting.data.MemberState;
 import io.agora.meeting.data.PeerMsg;
@@ -184,11 +186,79 @@ public class RtmEventHandler extends RtmEventListener {
     private void onBoardInfoUpdated(String json) {
         BroadcastMsg.Board board = gson.fromJson(json, BroadcastMsg.Board.class);
         meetingVM.updateShareBoard(board.data);
+
+        Me me = meetingVM.getMeValue();
+        if (me != null) {
+            boolean contains = board.data.shareBoardUsers.contains(me);
+            if (me.isGrantBoard() != contains) {
+                meetingVM.updateMe(new Member(me) {{
+                    grantBoard = contains ? ModuleState.ENABLE : ModuleState.DISABLE;
+                }});
+            }
+        }
+
+        List<Member> hosts = meetingVM.getHostsValue();
+        for (int i = 0; i < hosts.size(); i++) {
+            Member member = hosts.get(i);
+            boolean contains = board.data.shareBoardUsers.contains(member);
+            if (member.isGrantBoard() != contains) {
+                hosts.set(i, new Member(member) {{
+                    grantBoard = contains ? ModuleState.ENABLE : ModuleState.DISABLE;
+                }});
+            }
+        }
+        meetingVM.updateHosts(hosts);
+
+        List<Member> audiences = meetingVM.getAudiencesValue();
+        for (int i = 0; i < audiences.size(); i++) {
+            Member member = audiences.get(i);
+            boolean contains = board.data.shareBoardUsers.contains(member);
+            if (member.isGrantBoard() != contains) {
+                audiences.set(i, new Member(member) {{
+                    grantBoard = contains ? ModuleState.ENABLE : ModuleState.DISABLE;
+                }});
+            }
+        }
+        meetingVM.updateAudiences(audiences);
     }
 
     private void onScreenInfoUpdated(String json) {
         BroadcastMsg.Screen screen = gson.fromJson(json, BroadcastMsg.Screen.class);
         meetingVM.updateShareScreen(screen.data);
+
+        Me me = meetingVM.getMeValue();
+        if (me != null) {
+            boolean contains = screen.data.shareScreenUsers.contains(me);
+            if (me.isGrantScreen() != contains) {
+                meetingVM.updateMe(new Member(me) {{
+                    grantScreen = contains ? ModuleState.ENABLE : ModuleState.DISABLE;
+                }});
+            }
+        }
+
+        List<Member> hosts = meetingVM.getHostsValue();
+        for (int i = 0; i < hosts.size(); i++) {
+            Member member = hosts.get(i);
+            boolean contains = screen.data.shareScreenUsers.contains(member);
+            if (member.isGrantScreen() != contains) {
+                hosts.set(i, new Member(member) {{
+                    grantScreen = contains ? ModuleState.ENABLE : ModuleState.DISABLE;
+                }});
+            }
+        }
+        meetingVM.updateHosts(hosts);
+
+        List<Member> audiences = meetingVM.getAudiencesValue();
+        for (int i = 0; i < audiences.size(); i++) {
+            Member member = audiences.get(i);
+            boolean contains = screen.data.shareScreenUsers.contains(member);
+            if (member.isGrantScreen() != contains) {
+                audiences.set(i, new Member(member) {{
+                    grantScreen = contains ? ModuleState.ENABLE : ModuleState.DISABLE;
+                }});
+            }
+        }
+        meetingVM.updateAudiences(audiences);
     }
 
     private void onHostsUpdated(String json) {

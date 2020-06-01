@@ -13,16 +13,15 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import io.agora.meeting.BuildConfig;
 import io.agora.meeting.R;
 import io.agora.meeting.annotaion.member.ModuleState;
 import io.agora.meeting.base.BaseFragment;
 import io.agora.meeting.databinding.FragmentLoginBinding;
-import io.agora.meeting.widget.TipsPopup;
 import io.agora.meeting.service.body.req.RoomEntryReq;
 import io.agora.meeting.util.UUIDUtil;
 import io.agora.meeting.viewmodel.MeetingViewModel;
 import io.agora.meeting.viewmodel.PreferenceViewModel;
+import io.agora.meeting.widget.TipsPopup;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     private PreferenceViewModel preferenceViewModel;
@@ -72,12 +71,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                     break;
             }
         });
-
-        // TODO TEST
-        if (BuildConfig.DEBUG) {
-            binding.etRoomName.setText("lxh123");
-            binding.etRoomPwd.setText("123");
-        }
     }
 
     @Override

@@ -46,14 +46,20 @@ public class SimpleContainerFragment extends Fragment {
     }
 
     private void showBoard() {
-        manager.beginTransaction()
-                .replace(android.R.id.content, new SimpleBoardFragment(), null)
-                .commit();
+        String tag = "board";
+        if (manager.findFragmentByTag(tag) == null) {
+            manager.beginTransaction()
+                    .replace(android.R.id.content, new SimpleBoardFragment(), tag)
+                    .commit();
+        }
     }
 
     private void showVideo() {
-        manager.beginTransaction()
-                .replace(android.R.id.content, new SimpleVideoFragment(), null)
-                .commit();
+        String tag = "video";
+        if (manager.findFragmentByTag(tag) == null) {
+            manager.beginTransaction()
+                    .replace(android.R.id.content, new SimpleVideoFragment(), tag)
+                    .commit();
+        }
     }
 }

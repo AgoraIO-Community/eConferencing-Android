@@ -106,6 +106,21 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btn_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_25"
+            android:layout_marginEnd="@dimen/dp_15"
+            android:background="@color/blue_4da1ff"
+            android:onClick="@{clickListener}"
+            android:text="@string/apply_board"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_14"
+            app:isGone="@{viewModel.me.host || viewModel.shareBoard.shareBoardUsers.contains(viewModel.me)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/white_board_view" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

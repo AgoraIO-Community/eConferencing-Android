@@ -78,15 +78,7 @@ public class MemberListFragment extends BaseFragment<FragmentMemberListBinding> 
     @Override
     public void onItemClick(View view, int position, long id) {
         Member member = adapter.getItem(position);
-        switch (view.getId()) {
-            case R.id.container:
-                showActionSheet(member);
-                break;
-            case R.id.iv_mic:
-                break;
-            case R.id.iv_video:
-                break;
-        }
+        showActionSheet(member);
     }
 
     private void showActionSheet(Member member) {

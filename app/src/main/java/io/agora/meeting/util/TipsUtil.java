@@ -7,9 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import io.agora.meeting.MainApplication;
 import io.agora.meeting.R;
 import io.agora.meeting.annotaion.message.AdminAction;
 import io.agora.meeting.annotaion.message.NormalAction;
@@ -127,5 +130,16 @@ public class TipsUtil {
 
             return R.string.open_board;
         }
+    }
+
+    public static String getMemberName(@NotNull Member member) {
+        StringBuilder builder = new StringBuilder(member.userName);
+        if (member instanceof Me) {
+            builder.append(MainApplication.instance.getString(R.string.me));
+        }
+        if (member.isHost()) {
+            builder.append(MainApplication.instance.getString(R.string.host));
+        }
+        return builder.toString();
     }
 }

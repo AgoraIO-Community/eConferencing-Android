@@ -3,7 +3,6 @@ package io.agora.meeting.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
@@ -24,7 +23,7 @@ import io.agora.meeting.databinding.FragmentSimpleBoardBinding;
 import io.agora.meeting.viewmodel.MeetingViewModel;
 import io.agora.whiteboard.netless.manager.BoardManager;
 
-public class SimpleBoardFragment extends BaseFragment<FragmentSimpleBoardBinding> implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+public class SimpleBoardFragment extends BaseFragment<FragmentSimpleBoardBinding> implements RadioGroup.OnCheckedChangeListener {
     private MeetingViewModel meetingVM;
     private BoardManager manager;
     private WhiteSdk whiteSdk;
@@ -46,7 +45,25 @@ public class SimpleBoardFragment extends BaseFragment<FragmentSimpleBoardBinding
         whiteSdk = new WhiteSdk(binding.whiteBoardView, requireContext(), new WhiteSdkConfiguration());
 
         binding.rgAppliance.setOnCheckedChangeListener(this);
-        binding.setClickListener(this);
+        binding.setClickListener(v -> {
+            switch (v.getId()) {
+                case R.id.btn_color:
+                    int[] strokeColor = manager.getStrokeColor();
+                    if (strokeColor == null) return;
+                    ColorPickerDialogBuilder.with(requireContext())
+                            .initialColor(Color.argb(255, strokeColor[0], strokeColor[1], strokeColor[2]))
+                            .showAlphaSlider(false)
+                            .setPositiveButton(R.string._continue, (d, lastSelectedColor, allColors) ->
+                                    manager.setStrokeColor(new int[]{Color.red(lastSelectedColor), Color.green(lastSelectedColor), Color.blue(lastSelectedColor)})
+                            )
+                            .setNegativeButton(R.string.cancel, null)
+                            .build().show();
+                    break;
+                case R.id.btn_apply:
+                    meetingVM.switchBoardState(meetingVM.getMeValue());
+                    break;
+            }
+        });
     }
 
     @Override
@@ -83,19 +100,5 @@ public class SimpleBoardFragment extends BaseFragment<FragmentSimpleBoardBinding
                 manager.setAppliance(Appliance.ERASER);
                 break;
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        int[] strokeColor = manager.getStrokeColor();
-        if (strokeColor == null) return;
-        ColorPickerDialogBuilder.with(requireContext())
-                .initialColor(Color.argb(255, strokeColor[0], strokeColor[1], strokeColor[2]))
-                .showAlphaSlider(false)
-                .setPositiveButton(R.string._continue, (d, lastSelectedColor, allColors) ->
-                        manager.setStrokeColor(new int[]{Color.red(lastSelectedColor), Color.green(lastSelectedColor), Color.blue(lastSelectedColor)})
-                )
-                .setNegativeButton(R.string.cancel, null)
-                .build().show();
     }
 }

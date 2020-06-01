@@ -88,7 +88,7 @@
                 android:layout_width="@dimen/dp_16"
                 android:layout_height="@dimen/dp_16"
                 android:layout_marginHorizontal="@dimen/dp_5"
-                android:src="@drawable/ic_round_screen_share"
+                android:src="@drawable/ic_round_share"
                 app:isGone="@{!(large instanceof Screen)}" />
 
             <ImageView

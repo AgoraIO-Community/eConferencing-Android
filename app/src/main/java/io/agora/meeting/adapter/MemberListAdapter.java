@@ -84,7 +84,9 @@ public class MemberListAdapter extends ListAdapter<Member, MemberListAdapter.Vie
                     && Objects.equals(oldItem.role, newItem.role)
                     && Objects.equals(oldItem.enableChat, newItem.enableChat)
                     && Objects.equals(oldItem.enableVideo, newItem.enableVideo)
-                    && Objects.equals(oldItem.enableAudio, newItem.enableAudio);
+                    && Objects.equals(oldItem.enableAudio, newItem.enableAudio)
+                    && Objects.equals(oldItem.grantBoard, newItem.grantBoard)
+                    && Objects.equals(oldItem.grantScreen, newItem.grantScreen);
         }
     }
 }

@@ -43,6 +43,8 @@ import io.agora.meeting.service.body.req.RoomEntryReq;
 import io.agora.meeting.service.body.req.RoomReq;
 import io.agora.meeting.service.body.res.RoomBoardRes;
 import io.agora.meeting.util.Events;
+import io.agora.sdk.manager.RtcManager;
+import io.agora.sdk.manager.RtmManager;
 
 public class MeetingViewModel extends ViewModel {
     public final MutableLiveData<Room> room = new MutableLiveData<>();
@@ -252,9 +254,16 @@ public class MeetingViewModel extends ViewModel {
     }
 
     public void updateRoomState(@NonNull RoomState roomState) {
+        Me me = getMeValue();
+
         Integer muteAllChat = this.muteAllChat.getValue();
         if (!Objects.equals(muteAllChat, roomState.muteAllChat)) {
             if (roomState.muteAllChat != GlobalModuleState.ENABLE) {
+                if (me != null && !isHost(me)) {
+                    updateMe(new Member(me) {{
+                        enableChat = ModuleState.DISABLE;
+                    }});
+                }
                 List<Member> audiences = new ArrayList<>();
                 for (Member member : getAudiencesValue()) {
                     audiences.add(new Member(member) {{
@@ -265,9 +274,15 @@ public class MeetingViewModel extends ViewModel {
             }
             this.muteAllChat.postValue(roomState.muteAllChat);
         }
+
         Integer muteAllAudio = this.muteAllAudio.getValue();
         if (!Objects.equals(muteAllAudio, roomState.muteAllAudio)) {
             if (roomState.muteAllAudio != GlobalModuleState.ENABLE) {
+                if (me != null && !isHost(me)) {
+                    updateMe(new Member(me) {{
+                        enableAudio = ModuleState.DISABLE;
+                    }});
+                }
                 List<Member> audiences = new ArrayList<>();
                 for (Member member : getAudiencesValue()) {
                     audiences.add(new Member(member) {{
@@ -277,10 +292,14 @@ public class MeetingViewModel extends ViewModel {
                 updateAudiences(audiences);
             }
             this.muteAllAudio.postValue(roomState.muteAllAudio);
-            if (!isHost(getMeValue())) { // skip if I'm the host
-                Events.AlertEvent.setEvent(roomState.muteAllAudio);
+            if (!isHost(me)) { // skip if I'm the host
+                // skip if enable when init
+                if (muteAllAudio != null || roomState.muteAllAudio != GlobalModuleState.ENABLE) {
+                    Events.AlertEvent.setEvent(roomState.muteAllAudio);
+                }
             }
         }
+
         if (!Objects.equals(roomState.state, meetingState.getValue())) {
             meetingState.postValue(roomState.state);
         }
@@ -442,14 +461,11 @@ public class MeetingViewModel extends ViewModel {
                 if (isBoardSharing()) {
                     if (isGrantBoard(target)) {
                         modifyModuleState(target.userId, Module.BOARD, ModuleState.DISABLE);
+                    } else { // must apply to control whiteboard
+                        audienceApply(getBoardHostId(), Module.BOARD);
                     }
                 } else {
-                    String boardHostId = getBoardHostId();
-                    if (TextUtils.isEmpty(boardHostId)) {
-                        modifyModuleState(target.userId, Module.BOARD, ModuleState.ENABLE);
-                    } else { // must apply to control whiteboard
-                        audienceApply(boardHostId, Module.BOARD);
-                    }
+                    modifyModuleState(target.userId, Module.BOARD, ModuleState.ENABLE);
                 }
             }
         }
@@ -530,6 +546,11 @@ public class MeetingViewModel extends ViewModel {
 
     public void exitRoom(@Nullable Member member) {
         if (member == null) return;
+
+        if (isMe(member)) {
+            RtcManager.instance().leaveChannel();
+            RtmManager.instance().leaveChannel();
+        }
 
         helper.exitRoom(member.userId);
     }

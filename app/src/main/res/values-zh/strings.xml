@@ -97,6 +97,8 @@
 
     <!-- MemberListFragment -->
     <string name="member_title">成员 (%1$d)</string>
+    <string name="me">（我）</string>
+    <string name="host">（主持人）</string>
 
     <!-- ChatFragment -->
     <string name="input_tips">这里输入聊天内容</string>

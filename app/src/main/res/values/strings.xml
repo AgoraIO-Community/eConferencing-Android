@@ -97,6 +97,8 @@
 
     <!-- MemberListFragment -->
     <string name="member_title">Member (%1$d)</string>
+    <string name="me">&#160;(Me)</string>
+    <string name="host">&#160;(Host)</string>
 
     <!-- ChatFragment -->
     <string name="input_tips">Enter chat content here</string>

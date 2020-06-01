@@ -183,11 +183,7 @@ public class MeetingServiceHelper {
     public void exitRoom(@NonNull String userId) {
         service.roomExit(appId, meetingVM.getRoomId(), userId)
                 .enqueue(new BaseCallback<>(data -> {
-                    RtcManager.instance().leaveChannel();
-                    RtmManager.instance().leaveChannel();
-                }, throwable -> {
-                    RtcManager.instance().leaveChannel();
-                    RtmManager.instance().leaveChannel();
+
                 }));
     }
 }

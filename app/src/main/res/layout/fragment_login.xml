@@ -65,7 +65,7 @@
                     android:background="@drawable/sel_et_bg"
                     android:ems="10"
                     android:hint="@string/room_pwd"
-                    android:inputType="textPassword"
+                    android:inputType="textVisiblePassword"
                     android:paddingHorizontal="@dimen/dp_12"
                     android:textColor="@color/black_2e3848"
                     android:textColorHint="@color/gray_6d7278"
