@@ -62,6 +62,7 @@
             android:layout_marginStart="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_10"
             android:ellipsize="end"
+            android:singleLine="true"
             android:text="@{member.userName}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp_11"

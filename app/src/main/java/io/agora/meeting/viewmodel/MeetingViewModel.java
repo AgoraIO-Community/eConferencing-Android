@@ -39,8 +39,6 @@ import io.agora.meeting.service.body.req.RoomEntryReq;
 import io.agora.meeting.service.body.req.RoomReq;
 import io.agora.meeting.service.body.res.RoomBoardRes;
 import io.agora.meeting.util.Events;
-import io.agora.sdk.manager.RtcManager;
-import io.agora.sdk.manager.RtmManager;
 
 public class MeetingViewModel extends ViewModel {
     public final MutableLiveData<Room> room = new MutableLiveData<>();
@@ -447,12 +445,6 @@ public class MeetingViewModel extends ViewModel {
 
     public void exitRoom(@Nullable Member member) {
         if (member == null) return;
-
-        if (isMe(member)) {
-            RtcManager.instance().leaveChannel();
-            RtmManager.instance().leaveChannel();
-        }
-
         helper.exitRoom(member.userId);
     }
 }

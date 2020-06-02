@@ -116,17 +116,19 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
     @Override
     public void onDestroy() {
         super.onDestroy();
+        rtcVM.leaveChannel();
         RtmManager.instance().unregisterListener(rtmEventHandler);
         requireActivity().getViewModelStore().clear();
     }
 
     private void subscribeOnActivity() {
+        meetingVM.room.observe(requireActivity(), room -> rtcVM.joinChannel(room, meetingVM.getMeValue()));
         meetingVM.meetingState.observe(requireActivity(), meetingState -> {
             if (meetingState == MeetingState.END) showForceExitDialog(R.string.close_title);
         });
         meetingVM.me.observe(requireActivity(), me -> {
-            rtcVM.muteLocalAudioStream(!me.isAudioEnable());
-            rtcVM.muteLocalVideoStream(!me.isVideoEnable());
+            rtcVM.enableLocalAudio(me.isAudioEnable());
+            rtcVM.enableLocalVideo(me.isVideoEnable());
         });
         messageVM.adminMsgs.observe(requireActivity(), messages -> {
             if (messages != null && messages.size() > 0) {
@@ -279,7 +281,6 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
     }
 
     private void showForceExitDialog(@StringRes int titleRes) {
-        meetingVM.exitRoom(meetingVM.getMeValue());
         new AlertDialog.Builder(requireContext())
                 .setTitle(titleRes)
                 .setPositiveButton(R.string.know, (dialog, which) -> {
@@ -300,7 +301,7 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
                 .setTitle(R.string.rate)
                 .setView(binding.getRoot())
                 .setPositiveButton(R.string.submit, (dialog1, which1) -> rtcVM.rate(binding.ratingBar.getProgress()))
-                .setOnDismissListener(dialog1 -> Navigation.findNavController(requireView()).navigate(MeetingFragmentDirections.actionGlobalLoginFragment()))
+                .setOnDismissListener(dialog1 -> Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(MeetingFragmentDirections.actionGlobalLoginFragment()))
                 .show();
     }
 

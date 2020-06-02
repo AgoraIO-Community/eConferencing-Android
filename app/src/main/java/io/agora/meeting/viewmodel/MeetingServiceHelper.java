@@ -1,21 +1,16 @@
 package io.agora.meeting.viewmodel;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
 
 import io.agora.base.Callback;
-import io.agora.base.ThrowableCallback;
-import io.agora.base.ToastManager;
 import io.agora.base.network.RetrofitManager;
 import io.agora.meeting.BuildConfig;
 import io.agora.meeting.MainApplication;
 import io.agora.meeting.annotaion.member.Role;
 import io.agora.meeting.annotaion.message.ChatType;
 import io.agora.meeting.base.BaseCallback;
-import io.agora.meeting.data.Me;
 import io.agora.meeting.data.Member;
 import io.agora.meeting.data.Room;
 import io.agora.meeting.data.RoomState;
@@ -31,9 +26,6 @@ import io.agora.meeting.service.body.req.RoomEntryReq;
 import io.agora.meeting.service.body.req.RoomReq;
 import io.agora.meeting.service.body.req.ScreenReq;
 import io.agora.meeting.service.body.res.RoomBoardRes;
-import io.agora.sdk.manager.RtcManager;
-import io.agora.sdk.manager.RtmManager;
-import io.agora.sdk.manager.SdkManager;
 
 public class MeetingServiceHelper {
     public static final int LIMIT = 100;
@@ -64,9 +56,10 @@ public class MeetingServiceHelper {
     public void getRoomInfo(@NonNull String roomId) {
         service.room(appId, roomId)
                 .enqueue(new BaseCallback<>(data -> {
-                    // must set room and me before everything
-                    meetingVM.room.setValue(new Room(data.room));
-                    meetingVM.me.setValue(data.user);
+                    // must set me before room
+                    meetingVM.updateMe(data.user);
+                    // must set room before others
+                    meetingVM.updateRoom(new Room(data.room));
 
                     meetingVM.updateRoomState(new RoomState(data.room));
                     meetingVM.updateHosts(data.room.hosts);
@@ -89,37 +82,11 @@ public class MeetingServiceHelper {
                     nextId = data.nextId;
                     if (data.list.size() == 0) {
                         meetingVM.updateAudiences(audiences);
-                        joinChannel(meetingVM.room.getValue(), meetingVM.getMeValue());
                         return;
                     }
                     audiences.addAll(data.list);
                     initAudiences(roomId, audiences);
                 }));
-    }
-
-    public void joinChannel(@Nullable Room room, @Nullable Me me) {
-        if (room == null || me == null) return;
-
-        String channelId = room.channelName;
-        RtmManager.instance().login(me.rtmToken, me.uid, new ThrowableCallback<Void>() {
-            @Override
-            public void onSuccess(Void res) {
-                RtmManager.instance().joinChannel(new HashMap<String, String>() {{
-                    put(SdkManager.CHANNEL_ID, channelId);
-                }});
-                RtcManager.instance().joinChannel(new HashMap<String, String>() {{
-                    put(SdkManager.TOKEN, me.rtcToken);
-                    put(SdkManager.CHANNEL_ID, channelId);
-                    put(SdkManager.USER_ID, me.getUidStr());
-                    put(SdkManager.USER_EXTRA, BuildConfig.EXTRA);
-                }});
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                ToastManager.showShort(throwable.toString());
-            }
-        });
     }
 
     public void modifyRoomInfo(@NonNull RoomReq req) {

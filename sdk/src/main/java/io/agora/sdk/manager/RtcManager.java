@@ -97,6 +97,14 @@ public final class RtcManager extends SdkManager<RtcEngine> {
         sdk.setClientRole(role);
     }
 
+    public void enableLocalAudio(boolean enable) {
+        sdk.enableLocalAudio(enable);
+    }
+
+    public void enableLocalVideo(boolean enable) {
+        sdk.enableLocalVideo(enable);
+    }
+
     public void muteLocalAudioStream(boolean isMute) {
         sdk.muteLocalAudioStream(isMute);
     }

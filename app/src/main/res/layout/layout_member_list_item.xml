@@ -36,13 +36,17 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_6"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="@{TipsUtil.getMemberName(member)}"
             android:textColor="@color/black_2e3848"
             android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_host"
             app:layout_constraintStart_toEndOf="@+id/iv_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
