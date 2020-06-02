@@ -45,6 +45,7 @@
 
         <SwitchPreferenceCompat
             android:layout="@layout/layout_preference_switch"
+            app:enabled="false"
             app:iconSpaceReserved="false"
             app:key="@string/key_beauty"
             app:title="@string/beauty" />

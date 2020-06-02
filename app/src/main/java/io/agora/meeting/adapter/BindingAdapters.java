@@ -44,15 +44,33 @@ public class BindingAdapters {
     public static void bindVideo(View view, boolean enable, int uid, boolean overlay, @RenderMode int renderMode) {
         if (view instanceof ViewGroup) {
             if (enable) {
-                SurfaceView surfaceView = RtcManager.instance().createRendererView(view.getContext());
+                SurfaceView surfaceView;
+                // get child view from ViewGroup
+                View child = ((ViewGroup) view).getChildAt(0);
+                if (child instanceof SurfaceView) { // SurfaceView already exits
+                    surfaceView = (SurfaceView) child;
+                    Object tag = surfaceView.getTag();
+                    if (tag instanceof Integer) {
+                        if ((Integer) tag == uid) {
+                            // return if the SurfaceView has bound this uid
+                            return;
+                        }
+                    }
+                } else { // SurfaceView not exits
+                    // create new SurfaceView
+                    surfaceView = RtcManager.instance().createRendererView(view.getContext());
+                }
+
                 surfaceView.setZOrderMediaOverlay(overlay);
+                surfaceView.setTag(uid); // bind uid
+                ((ViewGroup) view).removeAllViews();
+                ((ViewGroup) view).addView(surfaceView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
                 if (uid == 0) {
                     RtcManager.instance().setupLocalVideo(surfaceView, renderMode);
                 } else {
                     RtcManager.instance().setupRemoteVideo(surfaceView, renderMode, uid);
                 }
-                ((ViewGroup) view).removeAllViews();
-                ((ViewGroup) view).addView(surfaceView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             } else {
                 ((ViewGroup) view).removeAllViews();
             }

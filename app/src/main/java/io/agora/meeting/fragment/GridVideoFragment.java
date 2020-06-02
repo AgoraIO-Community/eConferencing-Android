@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import io.agora.meeting.adapter.GridVideoAdapter;
 import io.agora.meeting.base.BaseFragment;
 import io.agora.meeting.databinding.FragmentGridVideoBinding;
-import io.agora.meeting.viewmodel.MeetingViewModel;
+import io.agora.meeting.viewmodel.RenderVideoModel;
 
 public class GridVideoFragment extends BaseFragment<FragmentGridVideoBinding> {
     private static final int SPAN_COUNT = 2;
 
-    private MeetingViewModel meetingVM;
+    private RenderVideoModel renderVM;
     private int fromIndex;
     private int toIndex;
     private GridVideoAdapter adapter;
@@ -34,7 +34,7 @@ public class GridVideoFragment extends BaseFragment<FragmentGridVideoBinding> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        meetingVM = new ViewModelProvider(requireActivity()).get(MeetingViewModel.class);
+        renderVM = new ViewModelProvider(requireActivity()).get(RenderVideoModel.class);
 
         GridVideoFragmentArgs args = GridVideoFragmentArgs.fromBundle(requireArguments());
         fromIndex = args.getFromIndex();
@@ -68,6 +68,6 @@ public class GridVideoFragment extends BaseFragment<FragmentGridVideoBinding> {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        meetingVM.renders.observe(getViewLifecycleOwner(), renders -> adapter.submitList(renders.subList(Math.min(fromIndex, renders.size()), Math.min(toIndex, renders.size()))));
+        renderVM.renders.observe(getViewLifecycleOwner(), renders -> adapter.submitList(renders.subList(Math.min(fromIndex, renders.size()), Math.min(toIndex, renders.size()))));
     }
 }

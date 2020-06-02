@@ -7,10 +7,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -27,7 +24,6 @@ import io.agora.meeting.annotaion.room.GlobalModuleState;
 import io.agora.meeting.annotaion.room.MeetingState;
 import io.agora.meeting.annotaion.room.Module;
 import io.agora.meeting.base.BaseCallback;
-import io.agora.meeting.data.BroadcastMsg;
 import io.agora.meeting.data.Me;
 import io.agora.meeting.data.Member;
 import io.agora.meeting.data.PeerMsg;
@@ -55,59 +51,11 @@ public class MeetingViewModel extends ViewModel {
     public final MutableLiveData<Me> me = new MutableLiveData<>();
     public final MutableLiveData<List<Member>> hosts = new MutableLiveData<>();
     public final MutableLiveData<List<Member>> audiences = new MutableLiveData<>();
-    public final MediatorLiveData<List<Member>> members = new MediatorLiveData<>();
-    public final MediatorLiveData<List<Member>> renders = new MediatorLiveData<>();
 
     public final MutableLiveData<ShareBoard> shareBoard = new MutableLiveData<>();
     public final MutableLiveData<ShareScreen> shareScreen = new MutableLiveData<>();
 
-    public final MutableLiveData<List<BroadcastMsg.Chat>> chatMsgs = new MutableLiveData<>();
-    public final LiveData<List<BroadcastMsg.Chat>> unReadChatMsgs = Transformations.map(chatMsgs, input -> {
-        List<BroadcastMsg.Chat> messages = new ArrayList<>();
-        for (BroadcastMsg.Chat chat : input) {
-            if (!chat.data.isRead) {
-                messages.add(chat);
-            }
-        }
-        return messages;
-    });
-
-    public final MutableLiveData<List<PeerMsg.Admin>> adminMsgs = new MutableLiveData<>();
-    public final MutableLiveData<List<PeerMsg.Normal>> normalMsgs = new MutableLiveData<>();
-
     private MeetingServiceHelper helper = new MeetingServiceHelper(this);
-
-    public MeetingViewModel() {
-        members.addSource(me, me -> initMembers(me, getHostsValue(), getAudiencesValue()));
-        members.addSource(hosts, hosts -> initMembers(getMeValue(), hosts, getAudiencesValue()));
-        members.addSource(audiences, audiences -> initMembers(getMeValue(), getHostsValue(), audiences));
-
-        renders.addSource(shareBoard, shareBoard -> initRenders(shareBoard, shareScreen.getValue(), getHostsValue(), getAudiencesValue()));
-        renders.addSource(shareScreen, shareScreen -> initRenders(shareBoard.getValue(), shareScreen, getHostsValue(), getAudiencesValue()));
-        renders.addSource(hosts, hosts -> initRenders(shareBoard.getValue(), shareScreen.getValue(), hosts, getAudiencesValue()));
-        renders.addSource(audiences, audiences -> initRenders(shareBoard.getValue(), shareScreen.getValue(), getHostsValue(), audiences));
-    }
-
-    private void initMembers(@Nullable Me me, @NonNull List<Member> hosts, @NonNull List<Member> audiences) {
-        List<Member> members = new ArrayList<>();
-        members.add(me);
-        members.addAll(hosts);
-        members.addAll(audiences);
-        this.members.setValue(members);
-    }
-
-    private void initRenders(@Nullable ShareBoard shareBoard, @Nullable ShareScreen shareScreen, @NonNull List<Member> hosts, @NonNull List<Member> audiences) {
-        List<Member> renders = new ArrayList<>();
-        if (shareBoard != null && shareBoard.isShareBoard()) {
-            renders.add(shareBoard.shareBoardUsers.get(0));
-        }
-        if (shareScreen != null && shareScreen.isShareScreen()) {
-            renders.addAll(shareScreen.shareScreenUsers);
-        }
-        renders.addAll(hosts);
-        renders.addAll(audiences);
-        this.renders.setValue(renders);
-    }
 
     @Nullable
     public String getRoomId() {
@@ -222,33 +170,6 @@ public class MeetingViewModel extends ViewModel {
         return shareBoard.createBoardUserId;
     }
 
-    @NonNull
-    public List<BroadcastMsg.Chat> getChatMsgsValue() {
-        List<BroadcastMsg.Chat> messages = this.chatMsgs.getValue();
-        if (messages == null) {
-            messages = new ArrayList<>();
-        }
-        return new ArrayList<>(messages);
-    }
-
-    @NonNull
-    public List<PeerMsg.Admin> getAdminMsgsValue() {
-        List<PeerMsg.Admin> adminMsgs = this.adminMsgs.getValue();
-        if (adminMsgs == null) {
-            adminMsgs = new ArrayList<>();
-        }
-        return new ArrayList<>(adminMsgs);
-    }
-
-    @NonNull
-    public List<PeerMsg.Normal> getNormalMsgsValue() {
-        List<PeerMsg.Normal> normalMsgs = this.normalMsgs.getValue();
-        if (normalMsgs == null) {
-            normalMsgs = new ArrayList<>();
-        }
-        return new ArrayList<>(normalMsgs);
-    }
-
     public void updateRoom(Room room) {
         this.room.postValue(room);
     }
@@ -331,26 +252,6 @@ public class MeetingViewModel extends ViewModel {
 
     public void updateShareScreen(@NonNull ShareScreen shareScreen) {
         this.shareScreen.postValue(shareScreen);
-    }
-
-    public void updateChatMsgs(@NonNull List<BroadcastMsg.Chat> messages) {
-        this.chatMsgs.postValue(messages);
-    }
-
-    public void readChatMsgs() {
-        List<BroadcastMsg.Chat> messages = getChatMsgsValue();
-        for (BroadcastMsg.Chat message : messages) {
-            message.data.isRead = true;
-        }
-        updateChatMsgs(messages);
-    }
-
-    public void updateAdminMsgs(@NonNull List<PeerMsg.Admin> adminMsgs) {
-        this.adminMsgs.postValue(adminMsgs);
-    }
-
-    public void updateNormalMsgs(@NonNull List<PeerMsg.Normal> normalMsgs) {
-        this.normalMsgs.postValue(normalMsgs);
     }
 
     public void entryRoom(@NonNull RoomEntryReq req, @NonNull Callback<String> callback) {

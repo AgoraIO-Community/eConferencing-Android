@@ -15,6 +15,10 @@ public abstract class RtmEventListener implements RtmClientListener, RtmChannelL
 
     }
 
+    public void onReJoinChannelSuccess(String channel) {
+
+    }
+
     @Override
     public void onMemberCountUpdated(int i) {
 

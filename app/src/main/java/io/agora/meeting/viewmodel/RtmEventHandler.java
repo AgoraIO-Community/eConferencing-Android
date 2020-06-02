@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,9 +34,16 @@ public class RtmEventHandler extends RtmEventListener {
 
     private Gson gson = new Gson();
     private MeetingViewModel meetingVM;
+    private MessageViewModel messageVM;
 
-    public RtmEventHandler(@NonNull MeetingViewModel viewModel) {
-        this.meetingVM = viewModel;
+    public RtmEventHandler(@NonNull MeetingViewModel meetingVM, @NotNull MessageViewModel messageVM) {
+        this.meetingVM = meetingVM;
+        this.messageVM = messageVM;
+    }
+
+    @Override
+    public void onReJoinChannelSuccess(String channel) {
+        meetingVM.getRoomInfo(meetingVM.getRoomId());
     }
 
     @Override
@@ -102,12 +110,12 @@ public class RtmEventHandler extends RtmEventListener {
         BroadcastMsg.Chat chat = gson.fromJson(json, BroadcastMsg.Chat.class);
         chat.data.isMe = meetingVM.isMe(chat.data.userId);
 
-        List<BroadcastMsg.Chat> messages = meetingVM.getChatMsgsValue();
+        List<BroadcastMsg.Chat> messages = messageVM.getChatMsgsValue();
         messages.add(chat);
-        meetingVM.updateChatMsgs(messages);
+        messageVM.updateChatMsgs(messages);
     }
 
-    private synchronized void onUserAccessChanged(String json) {
+    private void onUserAccessChanged(String json) {
         BroadcastMsg.Access access = gson.fromJson(json, BroadcastMsg.Access.class);
 
         List<Member> hosts = meetingVM.getHostsValue();
@@ -297,15 +305,15 @@ public class RtmEventHandler extends RtmEventListener {
 
     private void onAdminMsgReceived(String json) {
         PeerMsg.Admin admin = gson.fromJson(json, PeerMsg.Admin.class);
-        List<PeerMsg.Admin> adminMsgs = meetingVM.getAdminMsgsValue();
+        List<PeerMsg.Admin> adminMsgs = messageVM.getAdminMsgsValue();
         adminMsgs.add(admin);
-        meetingVM.updateAdminMsgs(adminMsgs);
+        messageVM.updateAdminMsgs(adminMsgs);
     }
 
     private void onNormalMsgReceived(String json) {
         PeerMsg.Normal normal = gson.fromJson(json, PeerMsg.Normal.class);
-        List<PeerMsg.Normal> normalMsgs = meetingVM.getNormalMsgsValue();
+        List<PeerMsg.Normal> normalMsgs = messageVM.getNormalMsgsValue();
         normalMsgs.add(normal);
-        meetingVM.updateNormalMsgs(normalMsgs);
+        messageVM.updateNormalMsgs(normalMsgs);
     }
 }

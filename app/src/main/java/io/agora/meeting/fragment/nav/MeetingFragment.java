@@ -38,6 +38,8 @@ import io.agora.meeting.util.Events;
 import io.agora.meeting.util.TimeUtil;
 import io.agora.meeting.util.TipsUtil;
 import io.agora.meeting.viewmodel.MeetingViewModel;
+import io.agora.meeting.viewmodel.MessageViewModel;
+import io.agora.meeting.viewmodel.RenderVideoModel;
 import io.agora.meeting.viewmodel.RtcViewModel;
 import io.agora.meeting.viewmodel.RtmEventHandler;
 import io.agora.sdk.manager.RtmManager;
@@ -48,6 +50,8 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
     private QBadgeView qBadgeView;
     private RtcViewModel rtcVM;
     private MeetingViewModel meetingVM;
+    private RenderVideoModel renderVM;
+    private MessageViewModel messageVM;
     private VideoFragmentAdapter adapter;
 
     private RtmEventHandler rtmEventHandler;
@@ -67,11 +71,15 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
         qBadgeView = new QBadgeView(requireContext());
 
         rtcVM = new ViewModelProvider(this).get(RtcViewModel.class);
-        meetingVM = new ViewModelProvider(requireActivity()).get(MeetingViewModel.class);
+        ViewModelProvider provider = new ViewModelProvider(requireActivity());
+        meetingVM = provider.get(MeetingViewModel.class);
         meetingVM.getRoomInfo(MeetingFragmentArgs.fromBundle(requireArguments()).getRoomId());
+        renderVM = provider.get(RenderVideoModel.class);
+        renderVM.init(meetingVM);
+        messageVM = provider.get(MessageViewModel.class);
         subscribeOnActivity();
 
-        rtmEventHandler = new RtmEventHandler(meetingVM);
+        rtmEventHandler = new RtmEventHandler(meetingVM, messageVM);
         RtmManager.instance().registerListener(rtmEventHandler);
     }
 
@@ -120,13 +128,13 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
             rtcVM.muteLocalAudioStream(!me.isAudioEnable());
             rtcVM.muteLocalVideoStream(!me.isVideoEnable());
         });
-        meetingVM.adminMsgs.observe(requireActivity(), messages -> {
+        messageVM.adminMsgs.observe(requireActivity(), messages -> {
             if (messages != null && messages.size() > 0) {
                 PeerMsg.Admin admin = messages.remove(0);
                 admin.process(requireContext(), meetingVM);
             }
         });
-        meetingVM.normalMsgs.observe(requireActivity(), messages -> {
+        messageVM.normalMsgs.observe(requireActivity(), messages -> {
             if (messages != null && messages.size() > 0) {
                 PeerMsg.Normal normal = messages.remove(0);
                 normal.process(requireContext(), meetingVM);
@@ -158,8 +166,8 @@ public class MeetingFragment extends BaseFragment<FragmentMeetingBinding> implem
             mic.setActivated(me.isAudioEnable());
             video.setActivated(me.isVideoEnable());
         });
-        meetingVM.renders.observe(getViewLifecycleOwner(), renders -> adapter.setItemCount(renders.size()));
-        meetingVM.unReadChatMsgs.observe(getViewLifecycleOwner(), messages -> {
+        renderVM.renders.observe(getViewLifecycleOwner(), renders -> adapter.setItemCount(renders.size()));
+        messageVM.unReadChatMsgs.observe(getViewLifecycleOwner(), messages -> {
             qBadgeView.bindTarget(chat);
             int size = messages.size();
             if (size == 0) {

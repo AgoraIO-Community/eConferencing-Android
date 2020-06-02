@@ -10,8 +10,8 @@
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="viewModel"
-            type="io.agora.meeting.viewmodel.MeetingViewModel" />
+            name="memberNum"
+            type="Integer" />
 
     </data>
 
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_arrow_left"
-                app:title="@{@string/member_title(viewModel.members.size)}"
+                app:title="@{@string/member_title(memberNum)}"
                 app:titleTextColor="@color/black_030303" />
 
         </com.google.android.material.appbar.AppBarLayout>

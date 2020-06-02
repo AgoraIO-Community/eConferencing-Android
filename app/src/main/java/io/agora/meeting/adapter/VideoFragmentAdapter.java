@@ -8,7 +8,7 @@ import io.agora.meeting.fragment.GridVideoFragment;
 import io.agora.meeting.fragment.SimpleContainerFragment;
 
 public class VideoFragmentAdapter extends FragmentStateAdapter {
-    private static final int CONTAINER_COUNT = 1;
+    private static final int CONTAINER_COUNT = 2;
     private static final int GRID_COUNT = 4;
 
     private int itemCount;
@@ -25,7 +25,7 @@ public class VideoFragmentAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if (position < CONTAINER_COUNT) {
+        if (position == 0) {
             return new SimpleContainerFragment();
         }
 

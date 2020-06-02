@@ -26,15 +26,19 @@ import io.agora.meeting.fragment.ActionSheetFragment;
 import io.agora.meeting.fragment.InviteFragment;
 import io.agora.meeting.util.TipsUtil;
 import io.agora.meeting.viewmodel.MeetingViewModel;
+import io.agora.meeting.viewmodel.MemberViewModel;
 
 public class MemberListFragment extends BaseFragment<FragmentMemberListBinding> implements OnItemClickListener {
     private MeetingViewModel meetingVM;
+    private MemberViewModel memberVM;
     private MemberListAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         meetingVM = new ViewModelProvider(requireActivity()).get(MeetingViewModel.class);
+        memberVM = new ViewModelProvider(this).get(MemberViewModel.class);
+        memberVM.init(meetingVM);
     }
 
     @Override
@@ -65,8 +69,10 @@ public class MemberListFragment extends BaseFragment<FragmentMemberListBinding> 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         meetingVM.me.observe(getViewLifecycleOwner(), me -> setHasOptionsMenu(me.isHost()));
-        meetingVM.members.observe(getViewLifecycleOwner(), members -> adapter.submitList(members));
-        binding.setViewModel(meetingVM);
+        memberVM.members.observe(getViewLifecycleOwner(), members -> {
+            binding.setMemberNum(members.size());
+            adapter.submitList(members);
+        });
     }
 
     @Override

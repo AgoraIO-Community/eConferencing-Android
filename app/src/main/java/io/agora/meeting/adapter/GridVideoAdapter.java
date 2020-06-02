@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +35,7 @@ public class GridVideoAdapter extends ListAdapter<Member, GridVideoAdapter.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
-        super.onBindViewHolder(holder, position, payloads);
+        holder.bind(getItem(position));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -64,6 +65,13 @@ public class GridVideoAdapter extends ListAdapter<Member, GridVideoAdapter.ViewH
                     && Objects.equals(oldItem.enableChat, newItem.enableChat)
                     && Objects.equals(oldItem.enableVideo, newItem.enableVideo)
                     && Objects.equals(oldItem.enableAudio, newItem.enableAudio);
+        }
+
+        @Nullable
+        @Override
+        public Object getChangePayload(@NonNull Member oldItem, @NonNull Member newItem) {
+            // disable ViewHolder change
+            return true;
         }
     }
 }

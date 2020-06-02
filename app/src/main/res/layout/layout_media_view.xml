@@ -57,12 +57,16 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:ellipsize="end"
             android:text="@{member.userName}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp_11"
             app:layout_constraintBottom_toBottomOf="@+id/iv_mic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_mic"
             app:layout_constraintTop_toTopOf="@+id/iv_mic" />
 

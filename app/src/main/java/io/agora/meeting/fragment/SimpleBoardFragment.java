@@ -15,6 +15,7 @@ import com.herewhite.sdk.RoomParams;
 import com.herewhite.sdk.WhiteSdk;
 import com.herewhite.sdk.WhiteSdkConfiguration;
 import com.herewhite.sdk.domain.Appliance;
+import com.herewhite.sdk.domain.DeviceType;
 
 import io.agora.meeting.R;
 import io.agora.meeting.base.BaseCallback;
@@ -42,7 +43,8 @@ public class SimpleBoardFragment extends BaseFragment<FragmentSimpleBoardBinding
 
     @Override
     protected void init() {
-        whiteSdk = new WhiteSdk(binding.whiteBoardView, requireContext(), new WhiteSdkConfiguration());
+        WhiteSdkConfiguration configuration = new WhiteSdkConfiguration(DeviceType.touch, 10, 0.1);
+        whiteSdk = new WhiteSdk(binding.whiteBoardView, requireContext(), configuration);
 
         binding.rgAppliance.setOnCheckedChangeListener(this);
         binding.setClickListener(v -> {

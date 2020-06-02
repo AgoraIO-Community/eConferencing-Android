@@ -8,20 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.List;
-
 import io.agora.meeting.base.BaseFragment;
-import io.agora.meeting.data.Member;
 import io.agora.meeting.databinding.FragmentSimpleVideoBinding;
-import io.agora.meeting.viewmodel.MeetingViewModel;
+import io.agora.meeting.viewmodel.RenderVideoModel;
 
 public class SimpleVideoFragment extends BaseFragment<FragmentSimpleVideoBinding> {
-    private MeetingViewModel meetingVM;
+    private RenderVideoModel renderVM;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        meetingVM = new ViewModelProvider(requireActivity()).get(MeetingViewModel.class);
+        renderVM = new ViewModelProvider(requireActivity()).get(RenderVideoModel.class);
     }
 
     @Override
@@ -37,21 +34,15 @@ public class SimpleVideoFragment extends BaseFragment<FragmentSimpleVideoBinding
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        meetingVM.me.observe(getViewLifecycleOwner(), me -> {
-            List<Member> renders = meetingVM.renders.getValue();
-            if (renders != null && renders.size() > 0) {
-                binding.setLittle(me);
-            } else {
-                binding.setLarge(me);
-            }
-        });
-        meetingVM.renders.observe(getViewLifecycleOwner(), renders -> {
+        renderVM.renders.observe(getViewLifecycleOwner(), renders -> {
             if (renders.size() > 0) {
-                binding.setLittle(meetingVM.getMeValue());
-                binding.setLarge(renders.get(0));
-            } else {
-                binding.setLittle(null);
-                binding.setLarge(meetingVM.getMeValue());
+                if (renders.size() == 1) {
+                    binding.setLittle(null);
+                    binding.setLarge(renders.get(0));
+                } else {
+                    binding.setLittle(renders.get(0));
+                    binding.setLarge(renders.get(1));
+                }
             }
         });
     }

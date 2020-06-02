@@ -261,10 +261,13 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
     @Override
     public void onConnectionStateChanged(int i, int i1) {
         log.i("onConnectionStateChanged %d %d", i, i1);
-        connectionState = i;
-        for (RtmEventListener listener : listeners) {
-            listener.onConnectionStateChanged(i, i1);
+        if (connectionState == RtmStatusCode.ConnectionState.CONNECTION_STATE_RECONNECTING
+                && i == RtmStatusCode.ConnectionState.CONNECTION_STATE_CONNECTED) {
+            for (RtmEventListener listener : listeners) {
+                listener.onReJoinChannelSuccess(rtmChannel.getId());
+            }
         }
+        connectionState = i;
     }
 
     @Override

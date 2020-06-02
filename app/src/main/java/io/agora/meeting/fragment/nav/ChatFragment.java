@@ -12,15 +12,16 @@ import io.agora.meeting.adapter.ChatAdapter;
 import io.agora.meeting.base.BaseFragment;
 import io.agora.meeting.databinding.FragmentChatBinding;
 import io.agora.meeting.viewmodel.MeetingViewModel;
+import io.agora.meeting.viewmodel.MessageViewModel;
 
 public class ChatFragment extends BaseFragment<FragmentChatBinding> {
-    private MeetingViewModel meetingVM;
+    private MessageViewModel messageVM;
     private ChatAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        meetingVM = new ViewModelProvider(requireActivity()).get(MeetingViewModel.class);
+        messageVM = new ViewModelProvider(requireActivity()).get(MessageViewModel.class);
     }
 
     @Override
@@ -35,7 +36,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding> {
         binding.list.setAdapter(adapter);
 
         binding.setClickListener(v -> {
-            meetingVM.sendMessage(binding.etMsg.getText().toString());
+            new ViewModelProvider(requireActivity()).get(MeetingViewModel.class)
+                    .sendMessage(binding.etMsg.getText().toString());
             binding.etMsg.setText(null);
         });
     }
@@ -43,7 +45,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding> {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        meetingVM.chatMsgs.observe(getViewLifecycleOwner(), messages -> {
+        messageVM.chatMsgs.observe(getViewLifecycleOwner(), messages -> {
             adapter.submitList(messages);
             binding.list.scrollToPosition(adapter.getItemCount());
         });
@@ -52,6 +54,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding> {
     @Override
     public void onPause() {
         super.onPause();
-        meetingVM.readChatMsgs();
+        messageVM.readChatMsgs();
     }
 }
