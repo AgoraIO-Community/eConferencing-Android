@@ -52,11 +52,11 @@ public class RetrofitManager {
         return instance;
     }
 
-    public void addHeader(String key, String value) {
+    public void addHeader(@NonNull String key, @NonNull String value) {
         headers.put(key, value);
     }
 
-    public <T> T getService(String baseUrl, Class<T> tClass) {
+    public <T> T getService(@NonNull String baseUrl, @NonNull Class<T> tClass) {
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
                 .baseUrl(baseUrl)

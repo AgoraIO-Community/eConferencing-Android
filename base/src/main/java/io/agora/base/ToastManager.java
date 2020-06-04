@@ -4,13 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 public class ToastManager {
     private static Context sContext;
     private static Handler sHandler;
 
-    public static void init(Context context) {
+    public static void init(@NonNull Context context) {
         sContext = context.getApplicationContext();
         sHandler = new Handler();
     }
@@ -23,7 +24,7 @@ public class ToastManager {
         showShort(getContext().getString(resId, formatArgs));
     }
 
-    public static void showShort(String text) {
+    public static void showShort(@NonNull String text) {
         Context context = getContext();
         sHandler.post(() -> Toast.makeText(context, text, Toast.LENGTH_SHORT).show());
     }
