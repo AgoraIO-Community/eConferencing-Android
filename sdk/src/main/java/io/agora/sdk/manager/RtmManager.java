@@ -65,13 +65,13 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
 
     @Override
     protected void configSdk() {
-        sdk.setLogFile(new File(LogManager.path, "agorartm.log").getAbsolutePath());
+        getSdk().setLogFile(new File(LogManager.getPath(), "agorartm.log").getAbsolutePath());
     }
 
     @Override
     public void joinChannel(Map<String, String> data) {
         String channelId = data.get(CHANNEL_ID);
-        rtmChannel = sdk.createChannel(channelId, this);
+        rtmChannel = getSdk().createChannel(channelId, this);
         rtmChannel.join(new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -95,7 +95,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
                 }
                 return;
             }
-            sdk.logout(new ResultCallback<Void>() {
+            getSdk().logout(new ResultCallback<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     login(rtmToken, userId, new RtmCallback(callback, () -> loginUid = userId));
@@ -112,7 +112,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
     }
 
     private void login(String rtmToken, int userId, ResultCallback<Void> callback) {
-        sdk.login(rtmToken, String.valueOf(userId), callback);
+        getSdk().login(rtmToken, String.valueOf(userId), callback);
     }
 
     public boolean isConnected() {
@@ -131,7 +131,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
 
     @Override
     protected void destroySdk() {
-        sdk.release();
+        getSdk().release();
     }
 
     public void registerListener(RtmEventListener listener) {
@@ -143,7 +143,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
     }
 
     public void queryPeersOnlineStatus(Set<String> set, @NonNull Callback<Map<String, Boolean>> callback) {
-        sdk.queryPeersOnlineStatus(set, new ResultCallback<Map<String, Boolean>>() {
+        getSdk().queryPeersOnlineStatus(set, new ResultCallback<Map<String, Boolean>>() {
             @Override
             public void onSuccess(Map<String, Boolean> stringBooleanMap) {
                 callback.onSuccess(stringBooleanMap);
@@ -159,7 +159,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
     }
 
     public void getChannelAttributes(String channelId, @NonNull Callback<List<RtmChannelAttribute>> callback) {
-        sdk.getChannelAttributes(channelId, new ResultCallback<List<RtmChannelAttribute>>() {
+        getSdk().getChannelAttributes(channelId, new ResultCallback<List<RtmChannelAttribute>>() {
             @Override
             public void onSuccess(List<RtmChannelAttribute> rtmChannelAttributes) {
                 callback.onSuccess(rtmChannelAttributes);
@@ -175,7 +175,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
     }
 
     public void addOrUpdateChannelAttributes(String channelId, List<RtmChannelAttribute> attributes, @Nullable Callback<Void> callback) {
-        sdk.addOrUpdateChannelAttributes(
+        getSdk().addOrUpdateChannelAttributes(
                 channelId,
                 attributes,
                 new ChannelAttributeOptions(true),
@@ -184,7 +184,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
     }
 
     public void deleteChannelAttributesByKeys(String channelId, List<String> keys, @Nullable Callback<Void> callback) {
-        sdk.deleteChannelAttributesByKeys(
+        getSdk().deleteChannelAttributesByKeys(
                 channelId,
                 keys,
                 new ChannelAttributeOptions(true),
@@ -192,7 +192,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
     }
 
     public void sendMessageToPeer(String userId, String message) {
-        sdk.sendMessageToPeer(userId, sdk.createMessage(message), null, new ResultCallback<Void>() {
+        getSdk().sendMessageToPeer(userId, getSdk().createMessage(message), null, new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 log.d("sendMessageToPeer success");
@@ -206,7 +206,7 @@ public final class RtmManager extends SdkManager<RtmClient> implements RtmClient
 
     public void sendMessage(String message) {
         if (rtmChannel != null) {
-            rtmChannel.sendMessage(sdk.createMessage(message), new ResultCallback<Void>() {
+            rtmChannel.sendMessage(getSdk().createMessage(message), new ResultCallback<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     log.d("sendMessage success");

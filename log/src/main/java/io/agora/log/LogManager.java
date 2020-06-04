@@ -2,6 +2,8 @@ package io.agora.log;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.Logger;
@@ -13,25 +15,24 @@ import com.elvishew.xlog.printer.file.naming.ChangelessFileNameGenerator;
 import java.io.File;
 
 public class LogManager {
-
-    public static File path;
-    private static String tag;
+    private static File sPath;
+    private static String sTag;
     private Logger logger;
 
-    public static void init(Context context, String tag) {
-        path = new File(context.getExternalCacheDir(), "logs");
-        LogManager.tag = tag;
+    public static void init(@NonNull Context context, @NonNull String tag) {
+        sPath = new File(context.getExternalCacheDir(), "logs");
+        sTag = tag;
         XLog.init(new LogConfiguration.Builder()
                         .logLevel(LogLevel.ALL)
                         .tag(tag).build(),
                 new AndroidPrinter(),
-                new FilePrinter.Builder(path.getPath())
+                new FilePrinter.Builder(getPath().getAbsolutePath())
                         .fileNameGenerator(new ChangelessFileNameGenerator(tag + ".log"))
                         .build());
     }
 
-    public LogManager(String tag) {
-        logger = XLog.tag(LogManager.tag + " " + tag).build();
+    public LogManager(String sTag) {
+        logger = XLog.tag(getTag() + " " + sTag).build();
     }
 
     public void d(String msg, Object... args) {
@@ -50,4 +51,15 @@ public class LogManager {
         logger.e(msg, args);
     }
 
+    public static File getPath() throws IllegalStateException {
+        if (sPath == null)
+            throw new IllegalStateException("LogManager is not initialized. Please call init() before use!");
+        return sPath;
+    }
+
+    public static String getTag() throws IllegalStateException {
+        if (sTag == null)
+            throw new IllegalStateException("LogManager is not initialized. Please call init() before use!");
+        return sTag;
+    }
 }

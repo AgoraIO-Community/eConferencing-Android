@@ -102,7 +102,7 @@ public class MeetingSettingFragment extends PreferenceFragmentCompat implements 
         } else if (TextUtils.equals(key, getString(R.string.key_invite))) {
             new InviteFragment().show(getChildFragmentManager(), null);
         } else if (TextUtils.equals(key, getString(R.string.key_upload))) {
-            LogUtil.upload(requireActivity());
+            LogUtil.upload(requireActivity(), meetingVM.getRoomId());
         }
         return super.onPreferenceTreeClick(preference);
     }

@@ -10,7 +10,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUtils {
-
     private static final int BUFFER_LEN = 8192;
 
     /**
@@ -97,5 +96,4 @@ public class ZipUtils {
         }
         return true;
     }
-
 }

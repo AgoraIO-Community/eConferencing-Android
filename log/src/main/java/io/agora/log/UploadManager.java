@@ -1,7 +1,9 @@
 package io.agora.log;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.sdk.android.oss.ClientException;
@@ -27,23 +29,44 @@ import io.agora.log.service.bean.ResponseBody;
 import io.agora.log.service.bean.response.LogParamsRes;
 
 public class UploadManager {
-
     public static class UploadParam {
         public String host;
+        public String url;
         public String appId;
         public String appCode;
         public String appVersion;
         public String roomId;
         public String uploadPath;
+        public String callbackUrl;
+
+        public UploadParam(
+                @NonNull String host,
+                @NonNull String url,
+                @Nullable String appId,
+                @NonNull String appCode,
+                @NonNull String appVersion,
+                @Nullable String roomId,
+                @NonNull String uploadPath,
+                @NonNull String callbackUrl
+        ) {
+            this.host = host;
+            this.url = url;
+            this.appId = appId;
+            this.appCode = appCode;
+            this.appVersion = appVersion;
+            this.roomId = roomId;
+            this.uploadPath = uploadPath;
+            this.callbackUrl = callbackUrl;
+        }
     }
 
-    public static void upload(Context context, UploadParam param, @Nullable Callback<String> callback) {
+    public static void upload(@NonNull Context context, @NonNull UploadParam param, @Nullable Callback<String> callback) {
         LogService service = RetrofitManager.instance().getService(param.host, LogService.class);
-        service.logParams(param.appId, param.appCode, param.appVersion, param.roomId)
+        service.logParams(param.url, TextUtils.isEmpty(param.appId) ? "default" : param.appId, param.appCode, param.appVersion, param.roomId)
                 .enqueue(new RetrofitManager.Callback<>(0, new ThrowableCallback<ResponseBody<LogParamsRes>>() {
                     @Override
                     public void onSuccess(ResponseBody<LogParamsRes> res) {
-                        res.data.callbackUrl = service.logStsCallback().request().url().toString();
+                        res.data.callbackUrl = service.logStsCallback(param.callbackUrl).request().url().toString();
                         uploadByOss(context, param.uploadPath, res.data, callback);
                     }
 
@@ -56,7 +79,7 @@ public class UploadManager {
                 }));
     }
 
-    private static void uploadByOss(Context context, String uploadPath, LogParamsRes param, @Nullable Callback<String> callback) {
+    private static void uploadByOss(@NonNull Context context, @NonNull String uploadPath, @NonNull LogParamsRes param, @Nullable Callback<String> callback) {
         try {
             File file = new File(new File(uploadPath).getParentFile(), "temp.zip");
             ZipUtils.zipFile(new File(uploadPath), file);
@@ -79,7 +102,7 @@ public class UploadManager {
                     file.delete();
                     if (callback != null) {
                         String body = result.getServerCallbackReturnBody();
-                        JsonObject json = new JsonParser().parse(body).getAsJsonObject();
+                        JsonObject json = JsonParser.parseString(body).getAsJsonObject();
                         callback.onSuccess(json.get("data").getAsString());
                     }
                 }
@@ -103,5 +126,4 @@ public class UploadManager {
             e.printStackTrace();
         }
     }
-
 }

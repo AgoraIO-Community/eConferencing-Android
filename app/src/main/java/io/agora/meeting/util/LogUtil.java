@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import io.agora.base.ToastManager;
+import io.agora.base.annotation.OS;
+import io.agora.base.annotation.Terminal;
 import io.agora.base.callback.ThrowableCallback;
 import io.agora.log.LogManager;
 import io.agora.log.UploadManager;
@@ -18,18 +20,17 @@ import io.agora.meeting.MainApplication;
 import io.agora.meeting.R;
 
 public class LogUtil {
-    public static void upload(@NonNull Activity activity) {
-        UploadManager.upload(activity, new UploadManager.UploadParam() {{
-            host = BuildConfig.API_BASE_URL;
-            if (TextUtils.isEmpty(MainApplication.getAppId())) {
-                appId = "default";
-            } else {
-                appId = MainApplication.getAppId();
-            }
-            appCode = BuildConfig.CODE;
-            appVersion = BuildConfig.VERSION_NAME;
-            uploadPath = LogManager.path.getAbsolutePath();
-        }}, new ThrowableCallback<String>() {
+    public static void upload(@NonNull Activity activity, @Nullable String roomId) {
+        UploadManager.upload(activity, new UploadManager.UploadParam(
+                BuildConfig.API_BASE_URL,
+                "/meeting/v1/log/params?osType=" + OS.ANDROID + "&terminalType=" + Terminal.PHONE,
+                MainApplication.getAppId(),
+                BuildConfig.CODE,
+                BuildConfig.VERSION_NAME,
+                roomId,
+                LogManager.getPath().getAbsolutePath(),
+                "/meeting/v1/log/sts/callback"
+        ), new ThrowableCallback<String>() {
             @Override
             public void onSuccess(String res) {
                 activity.runOnUiThread(() ->

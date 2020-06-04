@@ -36,7 +36,7 @@ public class SettingFragment extends PreferenceFragmentCompat implements AppBarD
         if (TextUtils.equals(key, getString(R.string.key_about))) {
             Navigation.findNavController(requireView()).navigate(SettingFragmentDirections.actionSettingFragmentToAboutFragment());
         } else if (TextUtils.equals(key, getString(R.string.key_upload))) {
-            LogUtil.upload(requireActivity());
+            LogUtil.upload(requireActivity(), null);
         }
         return super.onPreferenceTreeClick(preference);
     }

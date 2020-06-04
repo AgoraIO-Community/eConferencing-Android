@@ -52,27 +52,27 @@ public final class RtcManager extends SdkManager<RtcEngine> {
 
     @Override
     protected void configSdk() {
-        sdk.setLogFile(new File(LogManager.path, "agorasdk.log").getAbsolutePath());
-        sdk.enableAudio();
-        sdk.enableVideo();
-        sdk.enableWebSdkInteroperability(true);
+        getSdk().setLogFile(new File(LogManager.getPath(), "agorasdk.log").getAbsolutePath());
+        getSdk().enableAudio();
+        getSdk().enableVideo();
+        getSdk().enableWebSdkInteroperability(true);
         VideoEncoderConfiguration config = new VideoEncoderConfiguration(
                 VideoEncoderConfiguration.VD_360x360,
                 VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15,
                 VideoEncoderConfiguration.STANDARD_BITRATE,
                 VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE
         );
-        sdk.setVideoEncoderConfiguration(config);
+        getSdk().setVideoEncoderConfiguration(config);
     }
 
     @Override
     public void joinChannel(@NonNull Map<String, String> data) {
-        sdk.joinChannel(data.get(TOKEN), data.get(CHANNEL_ID), data.get(USER_EXTRA), Integer.parseInt(data.get(USER_ID)));
+        getSdk().joinChannel(data.get(TOKEN), data.get(CHANNEL_ID), data.get(USER_EXTRA), Integer.parseInt(data.get(USER_ID)));
     }
 
     @Override
     public void leaveChannel() {
-        sdk.leaveChannel();
+        getSdk().leaveChannel();
     }
 
     @Override
@@ -89,45 +89,45 @@ public final class RtcManager extends SdkManager<RtcEngine> {
     }
 
     public void setChannelProfile(@ChannelProfile int profile) {
-        sdk.setChannelProfile(profile);
+        getSdk().setChannelProfile(profile);
     }
 
     public void setClientRole(@ClientRole int role) {
-        sdk.setClientRole(role);
+        getSdk().setClientRole(role);
     }
 
     public void enableLocalAudio(boolean enable) {
-        sdk.enableLocalAudio(enable);
+        getSdk().enableLocalAudio(enable);
     }
 
     public void enableLocalVideo(boolean enable) {
-        sdk.enableLocalVideo(enable);
+        getSdk().enableLocalVideo(enable);
     }
 
     public void muteLocalAudioStream(boolean isMute) {
-        sdk.muteLocalAudioStream(isMute);
+        getSdk().muteLocalAudioStream(isMute);
     }
 
     public void muteLocalVideoStream(boolean isMute) {
-        sdk.muteLocalVideoStream(isMute);
+        getSdk().muteLocalVideoStream(isMute);
     }
 
     public void setEnableSpeakerphone(boolean enable) {
-        sdk.setEnableSpeakerphone(enable);
+        getSdk().setEnableSpeakerphone(enable);
     }
 
     public void enableDualStreamMode(boolean enable) {
-        sdk.setParameters(String.format("{\"che.audio.live_for_comm\":%b}", enable));
-        sdk.enableDualStreamMode(enable);
-        sdk.setRemoteDefaultVideoStreamType(enable ? Constants.VIDEO_STREAM_LOW : Constants.VIDEO_STREAM_HIGH);
+        getSdk().setParameters(String.format("{\"che.audio.live_for_comm\":%b}", enable));
+        getSdk().enableDualStreamMode(enable);
+        getSdk().setRemoteDefaultVideoStreamType(enable ? Constants.VIDEO_STREAM_LOW : Constants.VIDEO_STREAM_HIGH);
     }
 
     public void setRemoteVideoStreamType(int uid, @StreamType int streamType) {
-        sdk.setRemoteVideoStreamType(uid, streamType);
+        getSdk().setRemoteVideoStreamType(uid, streamType);
     }
 
     public void setRemoteDefaultVideoStreamType(@StreamType int streamType) {
-        sdk.setRemoteDefaultVideoStreamType(streamType);
+        getSdk().setRemoteDefaultVideoStreamType(streamType);
     }
 
     public SurfaceView createRendererView(Context context) {
@@ -137,32 +137,32 @@ public final class RtcManager extends SdkManager<RtcEngine> {
     public void setupLocalVideo(SurfaceView view, @RenderMode int renderMode) {
         log.d("setupLocalVideo %b", view != null);
         VideoCanvas canvas = new VideoCanvas(view, renderMode, 0);
-        sdk.setupLocalVideo(canvas);
+        getSdk().setupLocalVideo(canvas);
     }
 
     public void startPreview() {
-        sdk.startPreview();
+        getSdk().startPreview();
     }
 
     public void switchCamera() {
-        sdk.switchCamera();
+        getSdk().switchCamera();
     }
 
     public void setupRemoteVideo(SurfaceView view, @RenderMode int renderMode, int uid) {
         log.d("setupRemoteVideo %b %d", view != null, uid);
         VideoCanvas canvas = new VideoCanvas(view, renderMode, uid);
-        sdk.setupRemoteVideo(canvas);
+        getSdk().setupRemoteVideo(canvas);
     }
 
     public void rate(@IntRange(from = 1, to = 5) int rating, @Nullable String description) {
-        sdk.rate(sdk.getCallId(), rating, description);
+        getSdk().rate(getSdk().getCallId(), rating, description);
     }
 
     public void enableLastMileTest(boolean enable) {
         if (enable) {
-            sdk.enableLastmileTest();
+            getSdk().enableLastmileTest();
         } else {
-            sdk.disableLastmileTest();
+            getSdk().disableLastmileTest();
         }
     }
 
