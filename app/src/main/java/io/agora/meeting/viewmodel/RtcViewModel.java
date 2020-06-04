@@ -19,6 +19,7 @@ import io.agora.sdk.manager.RtmManager;
 import io.agora.sdk.manager.SdkManager;
 
 public class RtcViewModel extends ViewModel {
+    public final MutableLiveData<Integer> networkQuality = new MutableLiveData<>();
     public final MutableLiveData<Integer> audioRoute = new MutableLiveData<>();
 
     private RtcEventListener rtcEventListener = new RtcEventHandler(this);
@@ -31,6 +32,10 @@ public class RtcViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         RtcManager.instance().unregisterListener(rtcEventListener);
+    }
+
+    public void enableLastMileTest(boolean enable) {
+        RtcManager.instance().enableLastMileTest(enable);
     }
 
     public void joinChannel(@Nullable Room room, @Nullable Me me) {

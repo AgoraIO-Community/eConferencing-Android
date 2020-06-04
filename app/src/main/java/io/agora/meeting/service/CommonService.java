@@ -11,9 +11,9 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface CommonService {
-    @GET("/conf/v1/app/version?appCode=" + BuildConfig.CODE + "&osType=" + OS.ANDROID + "&terminalType=" + Terminal.PHONE + "&appVersion=" + BuildConfig.VERSION_NAME)
+    @GET("/meeting/v1/app/version?appCode=" + BuildConfig.CODE + "&osType=" + OS.ANDROID + "&terminalType=" + Terminal.PHONE + "&appVersion=" + BuildConfig.VERSION_NAME)
     Call<ResponseBody<AppVersionRes>> appVersion();
 
-    @GET("/conf/v1/multi/language")
+    @GET("/meeting/v1/multi/language")
     Call<ResponseBody<Map<String, Map<Integer, String>>>> language();
 }

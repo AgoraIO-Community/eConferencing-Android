@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_signal"
+        android:icon="@drawable/ic_signal"
+        android:title="@string/signal"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
         android:id="@id/action_loginFragment_to_settingFragment"
         android:icon="@drawable/ic_setting"
         android:title="@string/setting"

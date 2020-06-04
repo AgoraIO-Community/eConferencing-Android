@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.agora.base.ToastManager;
+import io.agora.meeting.R;
 import io.agora.meeting.annotaion.member.AccessState;
 import io.agora.meeting.annotaion.member.ModuleState;
 import io.agora.meeting.annotaion.member.Role;
@@ -132,8 +133,7 @@ public class RtmEventHandler extends RtmEventListener {
                     } else if (memberState.role == Role.AUDIENCE) {
                         audiences.remove(memberState);
                     }
-                    // TODO
-                    ToastManager.showShort(memberState.userName + " leave");
+                    ToastManager.showShort(R.string.member_leave, memberState.userName);
                     break;
                 case AccessState.ENTER:
                     if (memberState.role == Role.HOST) {
@@ -151,8 +151,7 @@ public class RtmEventHandler extends RtmEventListener {
                             audiences.add(memberState);
                         }
                     }
-                    // TODO
-                    ToastManager.showShort(memberState.userName + " join");
+                    ToastManager.showShort(R.string.member_enter, memberState.userName);
                     break;
             }
         }

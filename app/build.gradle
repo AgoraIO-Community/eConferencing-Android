@@ -18,6 +18,10 @@ android {
         buildConfigField 'String', 'CODE', '"conf-demo"'
         buildConfigField 'String', 'EXTRA', '"AgoraMeeting"'
         buildConfigField 'String', 'POLICY_URL', '"https://www.agora.io/privacy-policy"'
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86'
+        }
     }
 
     buildTypes {
@@ -51,7 +55,6 @@ dependencies {
     implementation project(':base')
     implementation project(':log')
     implementation project(':sdk')
-    implementation project(':timeline')
     implementation project(':whiteboard')
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

@@ -22,25 +22,25 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MeetingService {
-    @POST("/conf/v1/apps/{appId}/room/entry")
+    @POST("/meeting/apps/{appId}/v1/room/entry")
     Call<ResponseBody<RoomEntryRes>> roomEntry(
             @Path("appId") String appId,
             @Body RoomEntryReq body
     );
 
-    @GET("/conf/v1/apps/{appId}/room/{roomId}/board")
+    @GET("/meeting/apps/{appId}/v1/room/{roomId}/board")
     Call<ResponseBody<RoomBoardRes>> roomBoard(
             @Path("appId") String appId,
             @Path("roomId") String roomId
     );
 
-    @GET("/conf/v1/apps/{appId}/room/{roomId}")
+    @GET("/meeting/apps/{appId}/v1/room/{roomId}")
     Call<ResponseBody<RoomRes>> room(
             @Path("appId") String appId,
             @Path("roomId") String roomId
     );
 
-    @GET("/conf/v1/apps/{appId}/room/{roomId}/user/page")
+    @GET("/meeting/apps/{appId}/v1/room/{roomId}/user/page")
     Call<ResponseBody<RoomMemberRes>> userPage(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
@@ -49,14 +49,14 @@ public interface MeetingService {
             @Query("count") int count
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}")
     Call<ResponseBody<Boolean>> room(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
             @Body RoomReq body
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/user/{userId}")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/user/{userId}")
     Call<ResponseBody<Boolean>> roomUser(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
@@ -64,7 +64,7 @@ public interface MeetingService {
             @Body MemberReq body
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/user/{userId}/host/invite")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/user/{userId}/host/invite")
     Call<ResponseBody<Boolean>> invite(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
@@ -72,7 +72,7 @@ public interface MeetingService {
             @Body InviteReq body
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/user/{userId}/audience/apply")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/user/{userId}/audience/apply")
     Call<ResponseBody<Boolean>> apply(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
@@ -80,7 +80,7 @@ public interface MeetingService {
             @Body ApplyReq body
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/user/{userId}/screen")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/user/{userId}/screen")
     Call<ResponseBody<Boolean>> screen(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
@@ -88,7 +88,7 @@ public interface MeetingService {
             @Body ScreenReq body
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/user/{userId}/board")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/user/{userId}/board")
     Call<ResponseBody<Boolean>> board(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
@@ -96,21 +96,21 @@ public interface MeetingService {
             @Body BoardReq body
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/user/{userId}/host")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/user/{userId}/host")
     Call<ResponseBody<Boolean>> host(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
             @Path("userId") String userId
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/chat")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/chat")
     Call<ResponseBody<Boolean>> roomChat(
             @Path("appId") String appId,
             @Path("roomId") String roomId,
             @Body ChatReq body
     );
 
-    @POST("/conf/v1/apps/{appId}/room/{roomId}/user/{userId}/exit")
+    @POST("/meeting/apps/{appId}/v1/room/{roomId}/user/{userId}/exit")
     Call<ResponseBody<Boolean>> roomExit(
             @Path("appId") String appId,
             @Path("roomId") String roomId,

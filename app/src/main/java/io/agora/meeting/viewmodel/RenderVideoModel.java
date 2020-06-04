@@ -31,7 +31,19 @@ public class RenderVideoModel extends ViewModel {
             renders.add(shareBoard.shareBoardUsers.get(0));
         }
         if (shareScreen != null && shareScreen.isShareScreen()) {
-            renders.addAll(shareScreen.shareScreenUsers);
+            for (ShareScreen.Screen screen : shareScreen.shareScreenUsers) {
+                int index = hosts.indexOf(screen);
+                if (index > -1) {
+                    renders.add(new ShareScreen.Screen(hosts.get(index)));
+                } else {
+                    index = audiences.indexOf(screen);
+                    if (index > -1) {
+                        renders.add(new ShareScreen.Screen(audiences.get(index)));
+                    } else {
+                        renders.add(screen);
+                    }
+                }
+            }
         }
         renders.addAll(hosts);
         renders.addAll(audiences);

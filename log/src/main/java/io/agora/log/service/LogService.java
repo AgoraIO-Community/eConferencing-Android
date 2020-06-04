@@ -13,7 +13,7 @@ public interface LogService {
 
     // osType 1 iOS 2 Android
     // terminalType 1 phone 2 pad
-    @GET("/conf/v1/log/params?osType=" + OS.ANDROID + "&terminalType=" + Terminal.PHONE)
+    @GET("/meeting/v1/log/params?osType=" + OS.ANDROID + "&terminalType=" + Terminal.PHONE)
     Call<ResponseBody<LogParamsRes>> logParams(
             @Query("appId") String appId,
             @Query("appCode") String appCode,
@@ -21,7 +21,7 @@ public interface LogService {
             @Query("roomId") String roomId
     );
 
-    @POST("/conf/v1/log/sts/callback")
+    @POST("/meeting/v1/log/sts/callback")
     Call<ResponseBody<String>> logStsCallback();
 
 }

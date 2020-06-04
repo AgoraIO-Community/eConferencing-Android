@@ -17,7 +17,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitManager {
-
     private static RetrofitManager instance;
 
     private OkHttpClient client;
@@ -108,5 +107,4 @@ public class RetrofitManager {
             }
         }
     }
-
 }

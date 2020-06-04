@@ -3,7 +3,6 @@ package io.agora.base.network;
 import androidx.annotation.Nullable;
 
 public class BusinessException extends RuntimeException {
-
     private final int code;
     private final String message;
 
@@ -21,5 +20,4 @@ public class BusinessException extends RuntimeException {
     public String getMessage() {
         return message;
     }
-
 }

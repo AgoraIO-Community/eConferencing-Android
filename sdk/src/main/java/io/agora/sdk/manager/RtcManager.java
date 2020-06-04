@@ -159,6 +159,14 @@ public final class RtcManager extends SdkManager<RtcEngine> {
         sdk.rate(sdk.getCallId(), rating, description);
     }
 
+    public void enableLastMileTest(boolean enable) {
+        if (enable) {
+            sdk.enableLastmileTest();
+        } else {
+            sdk.disableLastmileTest();
+        }
+    }
+
     private IRtcEngineEventHandler eventHandler = new IRtcEngineEventHandler() {
         @Override
         public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
@@ -192,21 +200,16 @@ public final class RtcManager extends SdkManager<RtcEngine> {
         }
 
         @Override
-        public void onUserMuteAudio(int uid, boolean muted) {
-        }
-
-        @Override
-        public void onRemoteAudioStats(RemoteAudioStats stats) {
-        }
-
-        @Override
-        public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapsed) {
-        }
-
-        @Override
         public void onAudioRouteChanged(int routing) {
             for (RtcEventListener listener : listeners) {
                 listener.onAudioRouteChanged(routing);
+            }
+        }
+
+        @Override
+        public void onLastmileQuality(int quality) {
+            for (RtcEventListener listener : listeners) {
+                listener.onLastmileQuality(quality);
             }
         }
     };

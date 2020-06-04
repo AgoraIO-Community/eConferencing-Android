@@ -16,8 +16,12 @@ public class ToastManager {
         handler = new Handler();
     }
 
-    public static void showShort(@StringRes int stringResId) {
-        showShort(context.getString(stringResId));
+    public static void showShort(@StringRes int resId) {
+        showShort(resId);
+    }
+
+    public static void showShort(@StringRes int resId, Object... formatArgs) {
+        showShort(context.getString(resId, formatArgs));
     }
 
     public static void showShort(String text) {

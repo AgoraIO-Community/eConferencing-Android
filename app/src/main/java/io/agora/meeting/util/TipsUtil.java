@@ -128,7 +128,9 @@ public class TipsUtil {
         } else {
             if (!viewModel.isMe(member)) return 0;
 
-            return R.string.open_board;
+            // TODO hide open whiteboard interaction
+            return 0;
+//            return R.string.open_board;
         }
     }
 

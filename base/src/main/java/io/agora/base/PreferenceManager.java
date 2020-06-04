@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class PreferenceManager {
-
     private static SharedPreferences sp;
 
     public static void init(Context context) {
@@ -44,5 +43,4 @@ public class PreferenceManager {
         }
         return (T) result;
     }
-
 }

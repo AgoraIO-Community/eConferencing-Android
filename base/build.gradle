@@ -1,16 +1,17 @@
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion safeExtGet('compileSdkVersion', 29)
+    buildToolsVersion safeExtGet('buildToolsVersion', '29.0.3')
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion safeExtGet('minSdkVersion', 19)
+        targetSdkVersion safeExtGet('minSdkVersion', 29)
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
@@ -21,17 +22,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api "androidx.annotation:annotation:${safeExtGet('androidx.annotation:annotation', '1.1.0')}"
+    api "androidx.preference:preference:${safeExtGet('androidx.preference:preference', '1.1.1')}"
 
-    api 'androidx.appcompat:appcompat:1.1.0'
-    api 'androidx.preference:preference:1.1.1'
+    api "com.google.code.gson:gson:${safeExtGet('com.google.code.gson:gson', '2.8.6')}"
+    api "com.squareup.retrofit2:retrofit:${safeExtGet('com.squareup.retrofit2:retrofit', '2.9.0')}"
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    api 'com.google.code.gson:gson:2.8.5'
-    api 'com.squareup.retrofit2:retrofit:2.7.1'
-    api 'com.squareup.retrofit2:converter-gson:2.7.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+    implementation "com.squareup.retrofit2:converter-gson:${safeExtGet('com.squareup.retrofit2:converter-gson', '2.9.0')}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${safeExtGet('com.squareup.okhttp3:logging-interceptor', '4.7.2')}"
 }
