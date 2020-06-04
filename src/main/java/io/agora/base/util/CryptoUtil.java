@@ -2,14 +2,14 @@ package io.agora.base.util;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class CryptoUtil {
-    public static String md5(String string) {
-        if (TextUtils.isEmpty(string)) {
-            return "";
-        }
+    public static String md5(@NonNull String string) {
+        if (TextUtils.isEmpty(string)) return "";
         MessageDigest md5;
         try {
             md5 = MessageDigest.getInstance("MD5");
@@ -25,11 +25,11 @@ public class CryptoUtil {
             return result.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            return "";
         }
-        return "";
     }
 
-    public static String getAuth(String auth) {
+    public static String getAuth(@NonNull String auth) {
         String prefix = "Basic ";
         if (auth.startsWith(prefix)) {
             return auth;

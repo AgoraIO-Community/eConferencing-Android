@@ -6,7 +6,7 @@ public class BusinessException extends RuntimeException {
     private final int code;
     private final String message;
 
-    public BusinessException(int code, String message) {
+    public BusinessException(int code, @Nullable String message) {
         this.code = code;
         this.message = message;
     }
