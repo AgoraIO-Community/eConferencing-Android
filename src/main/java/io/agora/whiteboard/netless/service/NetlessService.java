@@ -8,7 +8,7 @@ import retrofit2.http.POST;
 
 public interface NetlessService {
     @FormUrlEncoded
-    @POST("/room/join")
+    @POST("room/join")
     Call<ResponseBody> roomJoin(
             @Field("uuid") String uuid,
             @Field("token") String token
