@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import io.agora.base.Callback;
-import io.agora.base.ThrowableCallback;
+import io.agora.base.callback.Callback;
+import io.agora.base.callback.ThrowableCallback;
 import io.agora.log.LogManager;
 import io.agora.rtm.ChannelAttributeOptions;
 import io.agora.rtm.ErrorInfo;

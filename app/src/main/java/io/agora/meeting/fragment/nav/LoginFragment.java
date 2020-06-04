@@ -16,13 +16,13 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import io.agora.base.util.UUIDUtil;
 import io.agora.meeting.R;
 import io.agora.meeting.annotaion.member.ModuleState;
 import io.agora.meeting.annotaion.room.NetworkQuality;
 import io.agora.meeting.base.BaseFragment;
 import io.agora.meeting.databinding.FragmentLoginBinding;
 import io.agora.meeting.service.body.req.RoomEntryReq;
-import io.agora.meeting.util.UUIDUtil;
 import io.agora.meeting.viewmodel.MeetingViewModel;
 import io.agora.meeting.viewmodel.PreferenceViewModel;
 import io.agora.meeting.viewmodel.RtcViewModel;

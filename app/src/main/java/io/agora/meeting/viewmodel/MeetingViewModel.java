@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.agora.base.Callback;
+import io.agora.base.callback.Callback;
 import io.agora.meeting.R;
 import io.agora.meeting.annotaion.member.ModuleState;
 import io.agora.meeting.annotaion.message.AdminAction;

@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class PreferenceManager {
-    private static SharedPreferences sp;
+    private static SharedPreferences sharedPreferences;
 
     public static void init(Context context) {
-        if (sp == null) {
-            sp = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        }
+        sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
     }
 
     public static void put(String key, Object value) {
+        SharedPreferences sp = getSharedPreferences();
         if (value instanceof Boolean) {
             sp.edit().putBoolean(key, (Boolean) value).apply();
         } else if (value instanceof Integer) {
@@ -28,6 +27,7 @@ public class PreferenceManager {
 
     public static <T> T get(String key, T defaultValue) {
         Object result;
+        SharedPreferences sp = getSharedPreferences();
         if (defaultValue instanceof Boolean) {
             result = sp.getBoolean(key, (Boolean) defaultValue);
         } else if (defaultValue instanceof Integer) {
@@ -42,5 +42,11 @@ public class PreferenceManager {
             return null;
         }
         return (T) result;
+    }
+
+    private static SharedPreferences getSharedPreferences() throws IllegalStateException {
+        if (sharedPreferences == null)
+            throw new IllegalStateException("PreferenceManager is not initialized. Please call init() before use!");
+        return sharedPreferences;
     }
 }

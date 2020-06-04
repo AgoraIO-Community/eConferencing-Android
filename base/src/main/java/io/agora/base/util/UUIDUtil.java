@@ -1,4 +1,4 @@
-package io.agora.meeting.util;
+package io.agora.base.util;
 
 import android.text.TextUtils;
 

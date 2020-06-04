@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.agora.base.ThrowableCallback;
+import io.agora.base.callback.ThrowableCallback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -67,9 +67,9 @@ public class RetrofitManager {
 
     public static class Callback<T extends ResponseBody<?>> implements retrofit2.Callback<T> {
         private int code;
-        private io.agora.base.Callback<T> callback;
+        private io.agora.base.callback.Callback<T> callback;
 
-        public Callback(int code, @NonNull io.agora.base.Callback<T> callback) {
+        public Callback(int code, @NonNull io.agora.base.callback.Callback<T> callback) {
             this.code = code;
             this.callback = callback;
         }

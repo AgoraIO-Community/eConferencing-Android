@@ -1,19 +1,18 @@
 package io.agora.base;
 
-import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 
 public class ToastManager {
+    private static Context sContext;
+    private static Handler sHandler;
 
-    private static Application context;
-    private static Handler handler;
-
-    public static void init(Application application) {
-        ToastManager.context = application;
-        handler = new Handler();
+    public static void init(Context context) {
+        sContext = context.getApplicationContext();
+        sHandler = new Handler();
     }
 
     public static void showShort(@StringRes int resId) {
@@ -21,11 +20,17 @@ public class ToastManager {
     }
 
     public static void showShort(@StringRes int resId, Object... formatArgs) {
-        showShort(context.getString(resId, formatArgs));
+        showShort(getContext().getString(resId, formatArgs));
     }
 
     public static void showShort(String text) {
-        handler.post(() -> Toast.makeText(context, text, Toast.LENGTH_SHORT).show());
+        Context context = getContext();
+        sHandler.post(() -> Toast.makeText(context, text, Toast.LENGTH_SHORT).show());
     }
 
+    private static Context getContext() throws IllegalStateException {
+        if (sContext == null)
+            throw new IllegalStateException("ToastManager is not initialized. Please call init() before use!");
+        return sContext;
+    }
 }

@@ -5,8 +5,8 @@ import androidx.annotation.NonNull;
 import com.herewhite.sdk.domain.Promise;
 import com.herewhite.sdk.domain.SDKError;
 
-import io.agora.base.Callback;
-import io.agora.base.ThrowableCallback;
+import io.agora.base.callback.Callback;
+import io.agora.base.callback.ThrowableCallback;
 import io.agora.base.network.RetrofitManager;
 import io.agora.whiteboard.BuildConfig;
 import io.agora.whiteboard.netless.service.NetlessService;

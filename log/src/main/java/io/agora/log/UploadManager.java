@@ -19,8 +19,8 @@ import com.google.gson.JsonParser;
 import java.io.File;
 import java.util.HashMap;
 
-import io.agora.base.Callback;
-import io.agora.base.ThrowableCallback;
+import io.agora.base.callback.Callback;
+import io.agora.base.callback.ThrowableCallback;
 import io.agora.base.network.RetrofitManager;
 import io.agora.log.service.LogService;
 import io.agora.log.service.bean.ResponseBody;

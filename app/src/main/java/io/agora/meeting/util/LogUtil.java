@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import io.agora.base.ThrowableCallback;
 import io.agora.base.ToastManager;
+import io.agora.base.callback.ThrowableCallback;
 import io.agora.log.LogManager;
 import io.agora.log.UploadManager;
 import io.agora.meeting.BuildConfig;

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import io.agora.base.Callback;
+import io.agora.base.callback.Callback;
 import io.agora.base.network.RetrofitManager;
 import io.agora.meeting.BuildConfig;
 import io.agora.meeting.MainApplication;
@@ -57,9 +57,9 @@ public class MeetingServiceHelper {
         service.room(appId, roomId)
                 .enqueue(new BaseCallback<>(data -> {
                     // must set me before room
-                    meetingVM.updateMe(data.user);
+                    meetingVM.me.setValue(data.user);
                     // must set room before others
-                    meetingVM.updateRoom(new Room(data.room));
+                    meetingVM.room.setValue(new Room(data.room));
 
                     meetingVM.updateRoomState(new RoomState(data.room));
                     meetingVM.updateHosts(data.room.hosts);
