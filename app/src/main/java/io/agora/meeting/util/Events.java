@@ -1,6 +1,7 @@
 package io.agora.meeting.util;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -92,7 +93,8 @@ public class Events {
             super(res);
         }
 
-        public static void setEvent(AppVersionRes version) {
+        public static void setEvent(@Nullable AppVersionRes version) {
+            if (version == null) return;
             post(EventType.UPGRADE, UpgradeEvent.class, new UpgradeEvent(version));
         }
 
