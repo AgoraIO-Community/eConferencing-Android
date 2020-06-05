@@ -1,7 +1,6 @@
 package io.agora.meeting.fragment.nav;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -85,25 +83,23 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         super.onActivityCreated(savedInstanceState);
         rtcVM.networkQuality.observe(getViewLifecycleOwner(), networkQuality -> {
             MenuItem item = binding.toolbar.getMenu().findItem(R.id.menu_signal);
-            Drawable drawable = item.getIcon();
-            drawable = DrawableCompat.wrap(drawable);
-            int colorId = R.color.gray_8b92a9;
+            int drawableId;
             switch (networkQuality) {
-                case NetworkQuality.IDLE:
-                    colorId = R.color.gray_8b92a9;
-                    break;
                 case NetworkQuality.GOOD:
-                    colorId = android.R.color.holo_green_light;
+                    drawableId = R.drawable.ic_signal_good;
                     break;
                 case NetworkQuality.POOR:
-                    colorId = android.R.color.holo_orange_light;
+                    drawableId = R.drawable.ic_signal_poor;
                     break;
                 case NetworkQuality.BAD:
-                    colorId = android.R.color.holo_red_light;
+                    drawableId = R.drawable.ic_signal_bad;
+                    break;
+                case NetworkQuality.IDLE:
+                default:
+                    drawableId = R.drawable.ic_signal_idle;
                     break;
             }
-            DrawableCompat.setTint(drawable, getResources().getColor(colorId));
-            item.setIcon(drawable);
+            item.setIcon(drawableId);
         });
         rtcVM.enableLastMileTest(true);
         binding.setViewModel(preferenceVM);

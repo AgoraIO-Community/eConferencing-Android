@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -140,8 +141,10 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
                 .setTitle(R.string.upgrade_title)
-                .setMessage(event.upgradeDescription)
                 .setPositiveButton(R.string.upgrade, (dialog, which) -> downloadApk());
+        if (!TextUtils.isEmpty(event.upgradeDescription)) {
+            builder.setMessage(event.upgradeDescription);
+        }
         if (event.forcedUpgrade == 2) {
             builder.setCancelable(false);
         } else {
