@@ -41,7 +41,13 @@ public class InviteFragment extends BottomSheetDialogFragment {
                 case R.id.btn_copy:
                     ClipboardManager manager = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
                     if (manager != null) {
-                        manager.setPrimaryClip(ClipData.newPlainText(null, binding.tvUrl.getText()));
+                        String shareInfo = binding.tvRoomName.getText() +
+                                "\n" + binding.tvPwd.getText() +
+                                "\n" + binding.tvName.getText() +
+                                "\n" + binding.tvWeb.getText() +
+                                "\n" + binding.tvAndroid.getText() +
+                                "\n" + binding.tvIos.getText();
+                        manager.setPrimaryClip(ClipData.newPlainText(null, shareInfo));
                         ToastManager.showShort(getString(R.string.clipboard));
                     }
                     dismiss();

@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">AgoraMeeting</string>
+    <string name="web_url" translatable="false">https://solutions.agora.io/meeting/web</string>
+    <string name="android_url" translatable="false">https://download.agora.io/demo/release/app-AgoraMeeting-release.apk</string>
+    <string name="ios_url" translatable="false">https://itunes.apple.com/cn/app/id1515428313</string>
     <string name="request_error">Server request error: %1$d</string>
     <string name="upload_success">Upload success, please save the log number to help our troubleshooting!</string>
     <string name="clipboard">Successfully saved to clipboard</string>
@@ -26,7 +29,8 @@
     <!-- AboutFragment -->
     <string name="about">About</string>
     <string name="check_upgrade">Check upgrade</string>
-    <string name="version_tips">Not the latest version, current version is V%1$s</string>
+    <string name="version_tips">Is the latest version, current version is V%1$s</string>
+    <string name="new_version_tips">Not the latest version, current version is V%1$s</string>
     <string name="upgrade_title">New version found, please download</string>
     <string name="upgrade">Upgrade now</string>
     <string name="later">Later</string>
@@ -130,10 +134,11 @@
 
     <!-- InviteFragment -->
     <string name="meeting_name">Meeting name: %1$s</string>
-    <string name="invited_by">Invited by: %1$s</string>
     <string name="meeting_pwd">Meeting password: %1$s</string>
-    <string name="invitation_link">Invitation link:</string>
+    <string name="invited_by">Invited by: %1$s</string>
+    <string name="web_link">Web link: %1$s</string>
+    <string name="android_link">Android link: %1$s</string>
+    <string name="ios_link">iOS link: %1$s</string>
     <string name="copy_meeting_info">Copy meeting information</string>
-    <string name="invitation_url" translatable="false">https://videocall.agora.io/#/391830718</string>
 
 </resources>

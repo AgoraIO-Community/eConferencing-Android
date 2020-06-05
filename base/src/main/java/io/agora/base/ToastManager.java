@@ -17,7 +17,7 @@ public class ToastManager {
     }
 
     public static void showShort(@StringRes int resId) {
-        showShort(resId);
+        showShort(getContext().getString(resId));
     }
 
     public static void showShort(@StringRes int resId, Object... formatArgs) {

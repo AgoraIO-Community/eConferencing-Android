@@ -43,17 +43,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                android:text="@{@string/invited_by(viewModel.me.userName)}"
-                android:textColor="@color/gray_323c47"
-                android:textSize="@dimen/sp_14"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_room_name" />
-
-            <TextView
                 android:id="@+id/tv_pwd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,29 +51,57 @@
                 android:textColor="@color/gray_323c47"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_room_name" />
 
             <TextView
-                android:id="@+id/tv_link"
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_20"
-                android:text="@string/invitation_link"
+                android:text="@{@string/invited_by(viewModel.me.userName)}"
                 android:textColor="@color/gray_323c47"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_pwd" />
 
             <TextView
-                android:id="@+id/tv_url"
+                android:id="@+id/tv_web"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_20"
-                android:text="@string/invitation_url"
+                android:autoLink="web"
+                android:text="@{@string/web_link(@string/web_url)}"
                 android:textColor="@color/gray_323c47"
+                android:textColorLink="@color/blue_4da1ff"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_link" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+            <TextView
+                android:id="@+id/tv_android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:autoLink="web"
+                android:text="@{@string/android_link(@string/android_url)}"
+                android:textColor="@color/gray_323c47"
+                android:textColorLink="@color/blue_4da1ff"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_web" />
+
+            <TextView
+                android:id="@+id/tv_ios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:autoLink="web"
+                android:text="@{@string/ios_link(@string/ios_url)}"
+                android:textColor="@color/gray_323c47"
+                android:textColorLink="@color/blue_4da1ff"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_android" />
 
             <Button
                 android:id="@+id/btn_copy"
@@ -99,7 +116,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_url" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_ios" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

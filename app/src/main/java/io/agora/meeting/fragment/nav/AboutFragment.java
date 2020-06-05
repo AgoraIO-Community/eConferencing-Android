@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import io.agora.base.ToastManager;
 import io.agora.meeting.BuildConfig;
 import io.agora.meeting.R;
 import io.agora.meeting.base.BaseFragment;
@@ -33,20 +34,19 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding> {
 
     @Override
     protected void init() {
-        binding.tvTips.setText(getString(R.string.version_tips, BuildConfig.VERSION_NAME));
         binding.tvAgreement.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         binding.tvPolicy.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        binding.setClickListener(v -> {
-            switch (v.getId()) {
-                case R.id.btn_update:
-                    commonVM.checkVersion(false);
-                    break;
-                case R.id.tv_agreement:
-                case R.id.tv_policy:
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.POLICY_URL));
-                    startActivity(intent);
-                    break;
+        binding.setClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.POLICY_URL))));
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        commonVM.appVersion.observe(getViewLifecycleOwner(), appVersion -> {
+            if (appVersion != null && appVersion.forcedUpgrade == 0) {
+                ToastManager.showShort(R.string.version_tips, BuildConfig.VERSION_NAME);
             }
         });
+        binding.setViewModel(commonVM);
     }
 }

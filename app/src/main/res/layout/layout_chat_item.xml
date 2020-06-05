@@ -50,8 +50,10 @@
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autoLink="web"
                 android:text="@{message.data.message}"
                 android:textColor="@{message.data.isMe ? @android:color/white : @color/black_2e3848}"
+                android:textColorLink="@{message.data.isMe ? @android:color/white : @color/blue_4da1ff}"
                 android:textSize="@dimen/sp_16" />
 
         </LinearLayout>

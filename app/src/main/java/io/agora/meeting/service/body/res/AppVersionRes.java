@@ -1,8 +1,13 @@
 package io.agora.meeting.service.body.res;
 
+import io.agora.base.annotation.OS;
+import io.agora.base.annotation.Terminal;
+
 public class AppVersionRes {
     public String appCode;
+    @OS
     public int osType;
+    @Terminal
     public int terminalType;
     public String appVersion;
     public String latestVersion;

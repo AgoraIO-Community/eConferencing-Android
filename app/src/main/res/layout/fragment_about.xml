@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="io.agora.meeting.BuildConfig" />
+
+        <variable
+            name="viewModel"
+            type="io.agora.meeting.viewmodel.CommonViewModel" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -71,6 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_3"
+                    android:text="@{viewModel.appVersion.forcedUpgrade == 0 ? @string/version_tips(BuildConfig.VERSION_NAME) : @string/new_version_tips(BuildConfig.VERSION_NAME)}"
                     android:textColor="@color/black_2e3848"
                     android:textSize="@dimen/sp_12"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +90,7 @@
                     android:layout_height="@dimen/dp_32"
                     android:layout_marginTop="@dimen/dp_32"
                     android:background="@color/blue_00a8ff"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{() -> viewModel.checkVersion(false)}"
                     android:text="@string/check_upgrade"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/sp_12"
