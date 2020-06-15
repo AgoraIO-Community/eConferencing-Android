@@ -88,3 +88,4 @@ gradle/
 gradlew
 gradlew.bat
 .idea/
+.DS_Store
