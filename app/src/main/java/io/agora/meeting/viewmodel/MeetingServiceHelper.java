@@ -26,6 +26,7 @@ import io.agora.meeting.service.body.req.RoomEntryReq;
 import io.agora.meeting.service.body.req.RoomReq;
 import io.agora.meeting.service.body.req.ScreenReq;
 import io.agora.meeting.service.body.res.RoomBoardRes;
+import io.agora.meeting.service.body.res.RoomEntryRes;
 
 public class MeetingServiceHelper {
     public static final int LIMIT = 100;
@@ -43,9 +44,14 @@ public class MeetingServiceHelper {
 
     public void entryRoom(@NonNull RoomEntryReq req, @NonNull Callback<String> callback) {
         service.roomEntry(appId, req)
-                .enqueue(new BaseCallback<>(data -> {
-                    RetrofitManager.instance().addHeader("token", data.userToken);
-                    callback.onSuccess(data.roomId);
+                .enqueue(new BaseCallback<>(new BaseCallback.SuccessCallback<RoomEntryRes>()
+                {
+                    @Override
+                    public void onSuccess(RoomEntryRes data)
+                    {
+                        RetrofitManager.instance().addHeader("token", data.userToken);
+                        callback.onSuccess(data.roomId);
+                    }
                 }));
     }
 

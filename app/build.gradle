@@ -1,3 +1,13 @@
+def safeExtGet(prop, key) {
+    if (rootProject.ext.has(prop)) {
+        def map = rootProject.ext.get(prop)
+        if (map.containsKey(key)) {
+            return map.get(key)
+        }
+    }
+    return "latest.release"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
 
@@ -58,18 +68,18 @@ dependencies {
     implementation project(':sdk')
     implementation project(':whiteboard')
 
-    testImplementation rootProject.ext.dependencies['junit']
-    androidTestImplementation rootProject.ext.dependencies['androidx.junit']
-    androidTestImplementation rootProject.ext.dependencies['espresso-core']
+    testImplementation "junit:junit:${safeExtGet('dependencies', 'junit:junit')}"
+    androidTestImplementation "androidx.test.ext:junit:${safeExtGet('dependencies', 'androidx.test.ext:junit')}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${safeExtGet('dependencies', 'androidx.test.espresso:espresso-core')}"
 
-    implementation rootProject.ext.dependencies['constraintlayout']
-    implementation rootProject.ext.dependencies['navigation-fragment']
-    implementation rootProject.ext.dependencies['lifecycle-extensions']
-    implementation rootProject.ext.dependencies['recyclerview']
-    implementation rootProject.ext.dependencies['material']
-    implementation rootProject.ext.dependencies['BasePopup']
-    implementation rootProject.ext.dependencies['easypermissions']
-    implementation rootProject.ext.dependencies['badgeview']
-    implementation rootProject.ext.dependencies['colorpicker']
-    implementation rootProject.ext.dependencies['live-event-bus-x']
+    implementation "androidx.constraintlayout:constraintlayout:${safeExtGet('dependencies', 'androidx.constraintlayout:constraintlayout')}"
+    implementation "androidx.navigation:navigation-fragment:${safeExtGet('dependencies', 'androidx.navigation:navigation-fragment')}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${safeExtGet('dependencies', 'androidx.lifecycle:lifecycle-extensions')}"
+    implementation "androidx.recyclerview:recyclerview:${safeExtGet('dependencies', 'androidx.recyclerview:recyclerview')}"
+    implementation "com.google.android.material:material:${safeExtGet('dependencies', 'com.google.android.material:material')}"
+    implementation "com.github.razerdp:BasePopup:${safeExtGet('dependencies', 'com.github.razerdp:BasePopup')}"
+    implementation "pub.devrel:easypermissions:${safeExtGet('dependencies', 'pub.devrel:easypermissions')}"
+    implementation "q.rorbin:badgeview:${safeExtGet('dependencies', 'q.rorbin:badgeview')}"
+    implementation "com.github.QuadFlask:colorpicker:${safeExtGet('dependencies', 'com.github.QuadFlask:colorpicker')}"
+    implementation "com.jeremyliao:live-event-bus-x:${safeExtGet('dependencies', 'com.jeremyliao:live-event-bus-x')}"
 }
