@@ -44,11 +44,9 @@ public class MeetingServiceHelper {
 
     public void entryRoom(@NonNull RoomEntryReq req, @NonNull Callback<String> callback) {
         service.roomEntry(appId, req)
-                .enqueue(new BaseCallback<>(new BaseCallback.SuccessCallback<RoomEntryRes>()
-                {
+                .enqueue(new BaseCallback<>(new BaseCallback.SuccessCallback<RoomEntryRes>() {
                     @Override
-                    public void onSuccess(RoomEntryRes data)
-                    {
+                    public void onSuccess(RoomEntryRes data) {
                         RetrofitManager.instance().addHeader("token", data.userToken);
                         callback.onSuccess(data.roomId);
                     }
